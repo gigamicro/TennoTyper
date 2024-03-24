@@ -265,11 +265,18 @@ var grineer = new function(){
 				this.imgs[chars[a]].src = this.folder + this.pre + chars[a] + this.ext;
 		}
 	}
+	this.bimgs = this.imgs;
 
 
 	this.placeWord = function(ctx, word){ // place left aligned images
 		var offset = 0;
 		var img;
+
+		var imgs = this.imgs;
+		if(boldify){
+			imgs = this.bImgs;
+		}
+
 		for(letter in word){
 			img = this.imgs[word[letter]];
 			if(img != undefined){
@@ -283,9 +290,15 @@ var grineer = new function(){
 	this.getWordLength = function(word){
 		var len = 0;
 		var img;
+
+		var imgs = this.imgs;
+		if(boldify){
+			imgs = this.bImgs;
+		}
+
 		for(letter in word){
 			//console.log("word:" + word + " letter:" + letter + " letterVal:" + word[letter] + " img:" + this.imgs[word[letter]] + " imgLen:" + this.imgs[word[letter]].width);
-			img = this.imgs[word[letter]];
+			img = imgs[word[letter]];
 			if(img != undefined){
 				len += (img.width + this.spacing.LetterSpacing);
 			}
@@ -296,8 +309,14 @@ var grineer = new function(){
 	this.getWordHeight = function(word){
 		var height = 0;
 		var img;
+
+		var imgs = this.imgs;
+		if(boldify){
+			imgs = this.bImgs;
+		}
+
 		for(letter in word){
-			img = this.imgs[word[letter]];
+			img = imgs[word[letter]];
 			if(img != undefined && img.height > height){
 				height = img.height;
 			}
@@ -310,10 +329,7 @@ var grineer = new function(){
 	}
 
 	this.modify = function(str){
-		str = str.replace(/qu/g, "kw");
-		str = str.replace(/q/g, "kw");
-		str = str.replace(/x/g, "ks");
-		return str;
+		return str.replace(/qu/g, "kw").replace(/q/g, "kw").replace(/x/g, "ks")
 	}
 }
 
@@ -334,74 +350,19 @@ var corpus = new function(){
 
 	this.imgs = [];
 	this.bImgs = [];
-	chars = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'r', 's', 't', 'u', 'v', 'w', 'y', 'z', '0', '1'];
-	for(var index = 0; index < chars.length; index += 1){ // gets images and puts them in imgs table
-		this.imgs[chars[index]] = new Image();
-		this.imgs[chars[index]].src = this.folder + this.pre + chars[index] + this.ext;
-		this.bImgs[chars[index]] = new Image();
-		this.bImgs[chars[index]].src = this.folder + 'b' + this.pre + chars[index] + this.ext;
+	this.chars = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'r', 's', 't', 'u', 'v', 'w', 'y', 'z', '0', '1'];
+	for(var index = 0; index < this.chars.length; index += 1){ // gets images and puts them in imgs table
+		this.imgs[this.chars[index]] = new Image();
+		this.imgs[this.chars[index]].src = this.folder + this.pre + this.chars[index] + this.ext;
+		this.bImgs[this.chars[index]] = new Image();
+		this.bImgs[this.chars[index]].src = this.folder + 'b' + this.pre + this.chars[index] + this.ext;
 	}
 
-
-	this.placeWord = function(ctx, word){ // place left aligned images
-		var offset = 0;
-		var img;
-
-		var imgs = this.imgs;
-		if(boldify){
-			imgs = this.bImgs;
-		}
-
-		for(letter in word){
-			img = imgs[word[letter]];
-			if(img != undefined){
-				ctx.rect(offset, 0, img.width, img.height);
-				ctx.drawImage(img, offset, 0);
-				offset += (img.width + this.spacing.LetterSpacing);
-			}
-		}
-	}
-
-	this.getWordLength = function(word){
-		var len = 0;
-		var img;
-
-		var imgs = this.imgs;
-		if(boldify){
-			imgs = this.bImgs;
-		}
-
-		for(letter in word){
-			//console.log("word:" + word + " letter:" + letter + " letterVal:" + word[letter] + " img:" + this.imgs[word[letter]] + " imgLen:" + this.imgs[word[letter]].width);
-			img = imgs[word[letter]];
-			if(img != undefined){
-				len += (img.width + this.spacing.LetterSpacing);
-			}
-		}
-		return (len - this.spacing.LetterSpacing);
-	}
-
-	this.getWordHeight = function(word){
-		var height = 0;
-		var img;
-
-		var imgs = this.imgs;
-		if(boldify){
-			imgs = this.bImgs;
-		}
-
-		for(letter in word){
-			img = imgs[word[letter]];
-			if(img != undefined && img.height > height){
-				height = img.height;
-			}
-		}
-		return height;
-	}
-
-	this.getWordHeightOffset = function(word){
-		return 0;
-	}
+	this.placeWord = grineer.placeWord;
+	this.getWordLength = grineer.getWordLength;
+	this.getWordHeight = grineer.getWordHeight;
+	this.getWordHeightOffset = grineer.getWordHeightOffset;
+	this.modify = grineer.modify;
 }
 
 
