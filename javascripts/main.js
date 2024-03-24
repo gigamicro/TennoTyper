@@ -5,9 +5,10 @@ var cheatWindow; // global refrence for cheatsheet window
 
 var text = document.getElementById("text");
 var language = document.getElementById("language");
-var oButton = document.getElementById("tOverride"); // tenno manual override button
-var bButton = document.getElementById("cBold"); // corpus bold option button
-	bButton.style.display = "none";
+var oButton = document.getElementById("override"); // tenno manual override button
+var bButton = document.getElementById("bold"); // corpus bold option button
+	bButton.parentElement.style.display = "none";
+var bgButton = document.getElementById("background"); // background option button
 
 var js = {
 	path: "./javascripts/",
@@ -18,9 +19,9 @@ var offset = {
 	xOffset: 0,
 	yOffset: 0,
 }
-var background = false;
-var phonet = true;
-var boldify = false;
+var background;
+var phonet;
+var boldify;
 
 var languages = ["tenno", "orokin", "corpus", "grineer"];
 var cheatsheets = {};
@@ -39,25 +40,28 @@ function draw(){
 	var str = text.value.toLowerCase();
 	//ctx.font = "20pt Optima";
 	//ctx.fillText(str, 2, 30);
+	background = bgButton.checked;
+	phonet = !oButton.checked;
+	boldify = bButton.checked;
 	switch(language.value){
 		case "corpus":
-			oButton.style.display = "none";
-			bButton.style.display = "inline";
+			oButton.parentElement.style.display = "none";
+			bButton.parentElement.style.display = "";
 			placeString(ctx, str, corpus);
 			break;
 		case "grineer":
-			oButton.style.display = "none";
-			bButton.style.display = "none";
+			oButton.parentElement.style.display = "none";
+			bButton.parentElement.style.display = "none";
 			placeString(ctx, grineer.modify(str), grineer);
 			break;
 		case "tenno":
-			oButton.style.display = "inline";
-			bButton.style.display = "none";
+			oButton.parentElement.style.display = "";
+			bButton.parentElement.style.display = "none";
 			placeString(ctx, str, tenno);
 			break;
 		case "orokin":
-			oButton.style.display = "inline";
-			bButton.style.display = "none";
+			oButton.parentElement.style.display = "";
+			bButton.parentElement.style.display = "none";
 			placeString(ctx, str, orokin);
 			break;
 	}

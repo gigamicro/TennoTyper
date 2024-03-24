@@ -28,7 +28,7 @@
 						<option value="grineer">Grineer</option>
 					</select>
 					<br>
-					<input type="checkbox" id="background" value="false" onclick="backG()">Background
+					<label for="background"><input type="checkbox" id="background" onclick="draw()">Background</label>
 					<br>
 					<!--input type="checkbox" id="logo" value="1" onInput="draw()">Race Logo
 					<br-->
@@ -39,8 +39,8 @@
 					<button type="button" id="save" onClick="saveImg()">Save</button>
 				</td>
 				<td>
-					<span id="tOverride"><input type="checkbox" value="false" onclick="phonetic()">Manual Override</span>
-					<span id="cBold"><input type="checkbox" value="false" onclick="bold()">Bold</span>
+					<label for="override"><input type="checkbox" id="override" onclick="draw()">Manual Override</label>
+					<label for="bold"    ><input type="checkbox" id="bold"     onclick="draw()">Bold</label>
 					<br>
 					<button type="button" id="cheat" onClick="cheatsheet()">CheatSheet</button>
 				</td>
