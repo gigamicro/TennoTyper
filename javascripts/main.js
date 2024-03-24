@@ -32,11 +32,7 @@ var cheatsheets = {};
 /*-------------------------------------------------*/
 
 function draw(){
-	//resize();
-	//clearCanvas();
 	var str = text.value.toLowerCase();
-	//ctx.font = "20pt Optima";
-	//ctx.fillText(str, 2, 30);
 	switch(language.value){
 		case "corpus":
 			override.parentElement.style.display = "none";
@@ -57,6 +53,11 @@ function draw(){
 			override.parentElement.style.display = "";
 			bold.parentElement.style.display = "none";
 			placeString(ctx, str, orokin);
+			break;
+		default:
+			clearCanvas();
+			ctx.font = "20pt Optima";
+			ctx.fillText(str, 2, 30);
 			break;
 	}
 }
