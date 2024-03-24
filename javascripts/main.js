@@ -46,7 +46,7 @@ function draw(){
 		case "grineer":
 			override.parentElement.style.display = "none";
 			bold.parentElement.style.display = "none";
-			placeString(ctx, grineer.modify(str), grineer);
+			placeString(ctx, str, grineer);
 			break;
 		case "tenno":
 			override.parentElement.style.display = "";
@@ -99,6 +99,7 @@ function find(item, array){
 	call required drawing functions
 */
 function placeString(ctx, string, lanClass){
+	if (lanClass.modify) string = lanClass.modify(string)
 	var txt = new Paragraph(string, lanClass);
 
 	c.width = Math.ceil(txt.w);
