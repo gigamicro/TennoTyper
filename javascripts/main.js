@@ -1403,15 +1403,12 @@ var orokin = new function(){
 	 * Returns word as array of language specyfic characters??
 	 */
 	this.literal = function(word){
-		var array = []
-		var found;
-		var a = 0;
+		var array = [];
 
 		/**
 		 * For each character in word swap to dialect character
 		 */
-		while(a < word.length){
-			found = false;
+		for(var a = 0; a < word.length; a++){
 			switch(word[a]){
 				case 'y':
 					array.push('ee');
@@ -1425,18 +1422,13 @@ var orokin = new function(){
 						break;
 					}
 				default:
-					for(var b = 0; b < this.chars.length; b++){
-						if(this.chars[b] != word[a]) continue;
+					for(glyph of this.chars){
+						if(glyph != word.slice(a,a+glyph.length)) continue;
 
-						array.push(this.chars[b]);
-						a += this.chars[b].length;
-						found = true;
+						array.push(glyph);
+						a += glyph.length - 1;
 						break;
 					}
-			}
-			
-			if(!found){
-				a++;
 			}
 		}
 
