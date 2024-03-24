@@ -5,10 +5,10 @@ var cheatWindow; // global refrence for cheatsheet window
 
 var text = document.getElementById("text");
 var language = document.getElementById("language");
-var oButton = document.getElementById("override"); // tenno manual override button
-var bButton = document.getElementById("bold"); // corpus bold option button
-	bButton.parentElement.style.display = "none";
-var bgButton = document.getElementById("background"); // background option button
+var override = document.getElementById("override"); // tenno manual override button
+var bold = document.getElementById("bold"); // corpus bold option button
+	bold.parentElement.style.display = "none";
+var background = document.getElementById("background"); // background option button
 
 var js = {
 	path: "./javascripts/",
@@ -19,9 +19,6 @@ var offset = {
 	xOffset: 0,
 	yOffset: 0,
 }
-var background;
-var phonet;
-var boldify;
 
 var languages = ["tenno", "orokin", "corpus", "grineer"];
 var cheatsheets = {};
@@ -40,28 +37,25 @@ function draw(){
 	var str = text.value.toLowerCase();
 	//ctx.font = "20pt Optima";
 	//ctx.fillText(str, 2, 30);
-	background = bgButton.checked;
-	phonet = !oButton.checked;
-	boldify = bButton.checked;
 	switch(language.value){
 		case "corpus":
-			oButton.parentElement.style.display = "none";
-			bButton.parentElement.style.display = "";
+			override.parentElement.style.display = "none";
+			bold.parentElement.style.display = "";
 			placeString(ctx, str, corpus);
 			break;
 		case "grineer":
-			oButton.parentElement.style.display = "none";
-			bButton.parentElement.style.display = "none";
+			override.parentElement.style.display = "none";
+			bold.parentElement.style.display = "none";
 			placeString(ctx, grineer.modify(str), grineer);
 			break;
 		case "tenno":
-			oButton.parentElement.style.display = "";
-			bButton.parentElement.style.display = "none";
+			override.parentElement.style.display = "";
+			bold.parentElement.style.display = "none";
 			placeString(ctx, str, tenno);
 			break;
 		case "orokin":
-			oButton.parentElement.style.display = "";
-			bButton.parentElement.style.display = "none";
+			override.parentElement.style.display = "";
+			bold.parentElement.style.display = "none";
 			placeString(ctx, str, orokin);
 			break;
 	}
@@ -115,7 +109,7 @@ function placeString(ctx, string, lanClass){
 
 	ctx.fillStyle = "white";
 	ctx.rect(0, 0, txt.w, txt.h);
-	if(background == true){
+	if(background.checked == true){
 		ctx.fill();
 	}
 	for(var a = 0; a < txt.lines.length; a++){ // for each line
@@ -251,10 +245,7 @@ var grineer = new function(){
 		var offset = 0;
 		var img;
 
-		var imgs = this.imgs;
-		if(boldify){
-			imgs = this.bImgs;
-		}
+		var imgs = bold.checked ? this.imgs : this.bImgs;
 
 		for(letter in word){
 			img = this.imgs[word[letter]];
@@ -270,10 +261,7 @@ var grineer = new function(){
 		var len = 0;
 		var img;
 
-		var imgs = this.imgs;
-		if(boldify){
-			imgs = this.bImgs;
-		}
+		var imgs = bold.checked ? this.imgs : this.bImgs;
 
 		for(letter in word){
 			//console.log("word:" + word + " letter:" + letter + " letterVal:" + word[letter] + " img:" + this.imgs[word[letter]] + " imgLen:" + this.imgs[word[letter]].width);
@@ -289,10 +277,7 @@ var grineer = new function(){
 		var height = 0;
 		var img;
 
-		var imgs = this.imgs;
-		if(boldify){
-			imgs = this.bImgs;
-		}
+		var imgs = bold.checked ? this.imgs : this.bImgs;
 
 		for(letter in word){
 			img = imgs[word[letter]];
@@ -703,7 +688,7 @@ var tenno = new function(){
 	this.phoneticize = function(word){ // return array of phoneticized chars, according to phoneticizeGuide.txt
 		var wordsArray = [];
 
-		if(!phonet){
+		if(override.checked){
 			wordsArray = this.literal(word);
 			return wordsArray;
 		}
@@ -1419,7 +1404,7 @@ var orokin = new function(){
 		/**
 		 * Not phonetic language
 		 */
-		if(!phonet){
+		if(override.checked){
 			wordsArray = this.literal(word);
 			return wordsArray;
 		}
