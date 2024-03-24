@@ -67,30 +67,6 @@ function draw(){
 	}
 }
 
-function resize(){
-	c.width = offset.xOffset;//(window.innerWidth-10);
-	c.height = offset.yOffset;//(window.innerHeight-80);
-}
-
-function loaded(){
-	resize();
-}
-
-function backG(){
-	background = !background;
-	draw();
-}
-
-function phonetic(){
-	phonet = !phonet;
-	draw();
-}
-
-function bold(){
-	boldify = !boldify;
-	draw();
-}
-
 function cheatsheet(){
 	if(cheatWindow != undefined){
 		cheatWindow.close();
@@ -131,7 +107,6 @@ function find(item, array){
 function placeString(ctx, string, lanClass){
 	var txt = new Paragraph(string, lanClass);
 
-	resize();
 	c.width = Math.ceil(txt.w);
 	c.height = Math.ceil(txt.h);
 
