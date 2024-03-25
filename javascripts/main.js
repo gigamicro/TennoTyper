@@ -60,8 +60,7 @@ function cheatsheet(){
 	if(cheatWindow != undefined){
 		cheatWindow.close();
 	}
-	cheatWindow = window.open("about:blank", "Cheatsheet");
-	cheatWindow.document.writeln("<html><body><img src='" + cheatsheets[language.value].src + "'/></body></html>");
+	cheatWindow = window.open(cheatsheets[language.value].src);
 	cheatWindow.focus();
 }
 
