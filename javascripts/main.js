@@ -206,10 +206,10 @@ var grineer = new function(){
 	};
 
 	this.imgs = [];
-	chars = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'r', 's', 't', 'u', 'v', 'w', 'y', 'z', '?', '.', ',', '#', '@', '$', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
-	for(var a = 0; a < chars.length; a++){ // gets images and puts them in imgs table
-		this.imgs[chars[a]] = new Image();
-		switch(chars[a]){
+	this.chars = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'r', 's', 't', 'u', 'v', 'w', 'y', 'z', '?', '.', ',', '#', '@', '$', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
+	for(var a = 0; a < this.chars.length; a++){ // gets images and puts them in imgs table
+		this.imgs[this.chars[a]] = new Image();
+		switch(this.chars[a]){
 			case '?':
 				this.imgs['?'].src = this.folder + this.pre + "Question" + this.ext;
 				break;
@@ -226,7 +226,7 @@ var grineer = new function(){
 				this.imgs['@'].src = this.folder + this.pre + "Logo" + this.ext;
 				break;
 			default:
-				this.imgs[chars[a]].src = this.folder + this.pre + chars[a] + this.ext;
+				this.imgs[this.chars[a]].src = this.folder + this.pre + this.chars[a] + this.ext;
 		}
 	}
 	this.bImgs = this.imgs;
