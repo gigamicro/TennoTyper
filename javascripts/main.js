@@ -997,6 +997,7 @@ var orokin = new function(){
 	this.ext = ".png";
 	this.centered = true;
 
+	this.currOverrideState = null;
 	this.currWord = "";
 	this.currWordArray = [];
 
@@ -1041,8 +1042,9 @@ var orokin = new function(){
 	 * PlaceWord function
 	 */
 	this.placeWord = function(ctx, word){
-		if(this.currWord != word){
+		if(this.currWord != word || this.currOverrideState != override.checked){
 			this.currWord = word;
+			this.currOverrideState = override.checked;
 			this.currWordArray = this.phoneticize(word);
 		}
 
