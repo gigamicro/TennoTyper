@@ -965,6 +965,8 @@ var tenno = new function(){
 
 		return wordsArray;
 	}
+
+	this.modify = grineer.modify;
 }
 
 //orokin 1999
@@ -1683,6 +1685,8 @@ var orokin = new function(){
 
 		return wordsArray;
 	}
+
+	this.modify = grineer.modify;
 }
 
 //debugging flag
