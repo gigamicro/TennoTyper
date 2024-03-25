@@ -30,8 +30,6 @@
 					<br>
 					<label for="background"><input type="checkbox" id="background" onclick="draw()">Background</label>
 					<br>
-					<!--input type="button" id="displayGuide" onInput="displayGuide()">Show Guide
-					<br-->
 					<button type="button" id="save" onClick="saveImg()">Save</button>
 				</td>
 				<td>
@@ -39,6 +37,7 @@
 					<label for="bold"    ><input type="checkbox" id="bold"     onclick="draw()">Bold</label>
 					<br>
 					<button type="button" id="cheat" onClick="cheatsheet()">CheatSheet</button>
+					<label for="debug" style="display:none;"><br><input type="checkbox" id="debug" onchange="debug = this.checked; draw()">Show Guide</label>
 				</td>
 			</tr>
 		</table>

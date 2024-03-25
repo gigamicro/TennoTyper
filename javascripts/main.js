@@ -1699,13 +1699,15 @@ var orokin = new function(){
 //debugging flag
 /*-------------------------------------------------*/
 
-var debug = false;
+var debugBox = document.getElementById("debug");
+var debug = debugBox.checked;
+if (debug) debugBox.parentElement.style.display = "";
 document.onkeydown = keydown;
 function keydown(evt) {
     if (!evt) evt = event;
     if (evt.altKey) {
-        debug = !debug;
-        console.log("Setting debug to " + debug);
+        debugBox.parentElement.style.display = "";
+        debugBox.checked = debug = !debugBox.checked;
         draw();
     }
 }
