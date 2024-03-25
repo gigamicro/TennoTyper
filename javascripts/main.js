@@ -329,10 +329,19 @@ var tenno = new function(){
 	this.pre = 't';
 	this.ext = ".png";
 
-	this.recalc = true; // whether recalculations are required
 	this.currWord = "";
+	this.currlit = null; // currWordArray is literal?
 	this.currWordArray = [];
-	this.dim = [0, 0, 0, 0]; // array with: Width, height, drawline offset, startpoint offset
+	this.dim = [0, 0, 0, 0]; // width, height, drawline offset, startpoint offset
+	this.phoneticizecache = function(word){
+		if(word != this.currWord || this.currlit != override.checked){
+			this.currWord = word;
+			this.currlit = override.checked;
+			this.currWordArray = this.phoneticize(word);
+			this.dim = this.getWordDimensions(word);
+		}
+		// return this.currWordArray;
+	}
 
 	this.centered = true;
 	this.rot = 24.3 * Math.PI / 180;
@@ -353,12 +362,7 @@ var tenno = new function(){
 	}
 
 	this.placeWord = function(ctx, word){ // place centered images
-		if(this.recalc || this.currWord != word){
-			this.currWord = word;
-			this.currWordArray = this.phoneticize(word);
-			this.dim = this.getWordDimensions(word);
-			this.recalc = false;
-		}
+		this.phoneticizecache(word);
 
 		var pCha = 0; // prevchar, 1 = misc, 2 = vowel, 3 = consonant
 		var xOff = this.dim[3]; // x offset
@@ -468,33 +472,21 @@ var tenno = new function(){
 	}
 
 	this.getWordLength = function(word){
-		if(this.recalc || word != this.currWord){// so I dont have to phoneticize several times on same word
-			this.dim = this.getWordDimensions(word);
-		}
+		this.phoneticizecache(word);
 		return this.dim[0];
 	}
 
 	this.getWordHeight = function(word){
-		if(this.recalc || word != this.currWord){// so I dont have to phoneticize several times on same word
-			this.dim = this.getWordDimensions(word);
-		}
+		this.phoneticizecache(word);
 		return this.dim[1];
 	}
 
 	this.getWordHeightOffset = function(word){
-		if(this.recalc || word != this.currWord){// so I dont have to phoneticize several times on same word
-			this.dim = this.getWordDimensions(word);
-		}
+		this.phoneticizecache(word);
 		return this.dim[2];
 	}
 
 	this.getWordDimensions = function(word){
-		if(this.recalc || this.currWord != word){
-			this.currWord = word;
-			this.currWordArray = this.phoneticize(word);
-			this.recalc = false;
-		}
-
 		var pCha = 0; // prevchar, 1 = misc, 2 = vowel, 3 = consonant
 		var netW = 0; // x offset
 		var staW = 0; // starting xOffset
