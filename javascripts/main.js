@@ -621,12 +621,16 @@ var tenno = new function(){
 		return out; // return array containing width, height, drawline offset
 	}
 
+	/**
+	 * Returns word as array of directly-matched characters
+	 */
 	this.literal = function(word){
-		var array = []
-		var found;
-		var a = 0;
-		while(a < word.length){
-			found = false;
+		var array = [];
+
+		/**
+		 * For each character in word swap to dialect character
+		 */
+		for(var a = 0; a < word.length; a++){
 			switch(word[a]){
 				case 'y':
 					array.push('ee');
@@ -640,30 +644,26 @@ var tenno = new function(){
 						break;
 					}
 				default:
-					for(var b = 0; b < this.chars.length; b++){
-						test = word.indexOf(this.chars[b], a);
-						if(test == a){
-							array.push(this.chars[b]);
-							a += this.chars[b].length;
-							b = this.chars.length+1;
-							found = true;
-						}
+					for(glyph of this.chars){
+						if(glyph != word.slice(a,a+glyph.length)) continue;
+
+						array.push(glyph);
+						a += glyph.length - 1;
+						break;
 					}
-			}
-			
-			if(!found){
-				a++;
 			}
 		}
 		return array;
 	}
 
+	/**
+	 * Returns word as array of phoneticized characters
+	 */
 	this.phoneticize = function(word){ // return array of phoneticized chars, according to phoneticizeGuide.txt
 		var wordsArray = [];
 
 		if(override.checked){
-			wordsArray = this.literal(word);
-			return wordsArray;
+			return this.literal(word);
 		}
 
 		for(var a = 0; a < word.length; a++){
@@ -1323,343 +1323,9 @@ var orokin = new function(){
 		return 0;
 	}
 
-	/**
-	 * Returns word as array of language specyfic characters??
-	 */
-	this.literal = function(word){
-		var array = [];
+	this.literal = tenno.literal;
 
-		/**
-		 * For each character in word swap to dialect character
-		 */
-		for(var a = 0; a < word.length; a++){
-			switch(word[a]){
-				case 'y':
-					array.push('ee');
-					break;
-				case 'w':
-					array.push('oo');
-					break;
-				case 'c':
-					if(!(a < word.length-1 && word[a+1] == 'h')){
-						array.push('k');
-						break;
-					}
-				default:
-					for(glyph of this.chars){
-						if(glyph != word.slice(a,a+glyph.length)) continue;
-
-						array.push(glyph);
-						a += glyph.length - 1;
-						break;
-					}
-			}
-		}
-
-		return array;
-	}
-
-	/**
-	 * Returns word as array of phoneticized characters
-	 */
-	this.phoneticize = function(word){ // return array of phoneticized chars, according to phoneticizeGuide.txt
-		var wordsArray = [];
-
-		/**
-		 * Not phonetic language
-		 */
-		if(override.checked){
-			wordsArray = this.literal(word);
-			return wordsArray;
-		}
-
-		for(var a = 0; a < word.length; a++){
-			if(a < word.length-1){ // if there is at least 1 char after a
-				var b = true; // true if program should break out of following main switch, only becomes false for fallthrough
-				switch(word[a]){
-				//handle special cases where singletons are not directly matched
-					case 'c':
-						switch(word[a+1]){
-							case 'h':
-								if(a > 0 && find(word[a-1], this.vowels)){
-									wordsArray.push('kh');
-									break;
-								}
-								wordsArray.push('ch');
-								break;
-							case 'o':
-								if(a < word.length-2 && word[a+2] == 'u'){
-									wordsArray.push(word[a]);
-									wordsArray.push('ow');
-									a++; // account for removing 3 chars
-									break;
-								}
-							default:
-								wordsArray.push('k');
-								a--; // account for only removing 1 char
-						}
-						a++;
-						b = false;
-						break;
-					case 'o':
-						switch(word[a+1]){
-							case 'o':
-							case 'u':
-								wordsArray.push('oo');
-								break;
-							case 'w':
-								wordsArray.push('ow');
-								break;
-							default:
-								if(find(word[a+1], this.vowels) || find(word[a+1], this.misc) || word[a+1] == 'l'){
-									wordsArray.push('o');
-								}else{
-									wordsArray.push('aw');
-								}
-								a--;
-						}
-						a++;
-						b = false;
-						break;
-					case 'w':
-						wordsArray.push('oo');
-						if(word[a+1] == 'a'){
-							wordsArray.push('o');
-							a++;
-						}
-						b = false;
-						break;
-					case 'y':
-						switch(word[a+1]){
-							case 'i':
-								wordsArray.push('aye');
-								a++;
-								break;
-							case 'o':
-								if(a < word.length-2 && word[a+2] == 'u'){
-									if(word.length == 3 || find(word[a+3], this.misc)){
-										wordsArray.push('ee');
-										wordsArray.push('oo');
-										wordsArray.push('h');
-										a += 2;
-										break;
-									}
-								}
-							default:
-								wordsArray.push('ee');
-						}
-						b = false;
-						break;
-
-				//handle normal cases
-					case 'a':
-						switch(word[a+1]){
-							case 'e':
-							case 'i':
-								wordsArray.push('ae');
-								a++
-								b = false;
-								break;
-							case 'y':
-								if(a < word.length-2 && word[a+2] == 'e'){
-									wordsArray.push('aye');
-									a += 2;
-									b = false;
-									break;
-								}
-								wordsArray.push('ae');
-								a++
-								b = false;
-								break;
-							case 'w':
-								wordsArray.push('aw');
-								a++;
-								b = false;
-								break;
-							case 's':
-								wordsArray.push('zh');
-								a++;
-								b = false;
-								break;
-							default:
-								if(a < word.length-2 && word[a+2] == 'e'){
-									if(!(find(word[a+1], this.vowels) || find(word[a+1], this.misc))){ // if consonant
-										if(word[a+1] == 'r'){
-											wordsArray.push('aw');
-										}else{
-											wordsArray.push('ae');
-										}
-										b = false;
-										break;
-									}
-								}
-						}
-						break;
-					case 'b':
-						if(a < word.length-2 && word[a+2] == 'u'){
-							if(word[a+1] == 'o'){
-								wordsArray.push('b');
-								wordsArray.push('ow');
-								a += 2;
-								b = false;
-							}
-						}
-						break;
-					case 'd':
-						switch(word[a+1]){
-							case 'h':
-								wordsArray.push('dh');
-								a++;
-								b = false;
-								break;
-							case 'o':
-								if(a < word.length-2 && word[a+2] == 'u'){
-									wordsArray.push(word[a]);
-									wordsArray.push('ow');
-									a += 2; // account for removing 3 chars
-									b = false;
-								}
-							default:
-						}
-						break;
-					case 'e':
-						switch(word[a+1]){
-							case 'a':
-							case 'e':
-								wordsArray.push('ee');
-								a++;
-								b = false;
-								break;
-							default:
-						}
-						break;
-					case 'g':
-						if(word[a+1] == 'e'){
-							wordsArray.push('j');
-							wordsArray.push('i');
-							a++;
-							b = false;
-						}
-						break;
-					case 'i':
-						if(word[a+1] == 'e'){
-							wordsArray.push('aye');
-							a++;
-							b = false;
-						}else if(word[a+1] == 'a'){
-							wordsArray.push('ee');
-							b = false;
-						}else if(a < word.length-2 && word[a+2] == 'e' && !find(word[a+3], this.vowels)){
-							if(!find(word[a+1], this.vowels) && !find(word[a+1], this.misc)){
-								wordsArray.push('aye');
-								b = false;
-							}
-						}
-						break;
-					case 'n':
-						if(a == word.length-2 && word[a+1] == 'g'){
-							wordsArray.push('ng');
-							a++;
-							b = false;
-						}
-						break;
-					case 's':
-						if(word[a+1] == 'h'){
-							wordsArray.push('sh');
-							a++;
-							b = false;
-						}
-						break;
-					case 't':
-						if(word[a+1] == 'h'){
-							wordsArray.push('th');
-							if(a < word.length-2 && word[a+2] == 'e'){
-								if(word.length == 3 || find(word[a+3], this.misc)){
-									wordsArray.push('u');
-									wordsArray.push('h');
-									a++;
-								}
-							}
-							a++;
-							b = false;
-						}else if(a < word.length-3){
-							if(word[a+1] == 'i' && word[a+2] == 'o' && word[a+3] == 'n'){
-								wordsArray.push('sh');
-								wordsArray.push('u');
-								wordsArray.push('m');
-								a += 3;
-								b = false;
-							}
-						}
-						break;
-					case 'u':
-						if(a < word.length-2){
-							if(!(find(word[a+1], this.vowels) || find(word[a+1], this.misc))){ // if a+1 = consonant
-								if(find(word[a+2], this.vowels)){ // if a+2 = vowel
-									wordsArray.push('oo');
-									b = false;
-									break;
-								}
-							}
-						}
-						break;
-					default:
-				}
-				if(b){ // true by default
-					wordsArray.push(word[a]);
-				}
-			}else{ // a is the last char in word
-				switch(word[a]){
-					case 'c':
-						wordsArray.push('k');
-						break;
-					case 'e': // e[end] = silent
-						if(a == 0){ // e is the only letter
-							wordsArray.push('e');
-						}
-						break;
-					case 'o':
-						wordsArray.push('o');
-						break;
-					case 'w':
-						wordsArray.push('oo');
-						break;
-					case 'x':
-						wordsArray.push('z');
-						break;
-					case 'i':
-						if(a == 0){ // if 'i' is the only letter
-							wordsArray.push('aye');
-						}else{
-							wordsArray.push('i');
-						}
-						break;
-					case 'y': // y[end] = aye
-						wordsArray.push('aye');
-						break;
-					default:
-						wordsArray.push(word[a]);
-				}
-			}
-			//console.log(word[a] + " -> " + wordsArray[wordsArray.length-1]);
-		}
-		//console.log(" ");
-
-		var a = 0; // remove duplicates and any undefined chars from the array
-		while(a < wordsArray.length){
-			if(!find(wordsArray[a], this.misc)){
-				while(a < wordsArray.length-1 && wordsArray[a] == wordsArray[a+1]){
-					wordsArray.splice(a, 1); // remove duplicates
-				}
-			}
-			if(this.imgs[wordsArray[a]] == undefined){ // remove undefined chars
-				wordsArray.splice(a, 1);
-			}
-			a++;
-		}
-
-		return wordsArray;
-	}
+	this.phoneticize = tenno.phoneticize;
 
 	this.modify = grineer.modify;
 }
