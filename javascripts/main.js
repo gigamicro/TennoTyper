@@ -191,20 +191,13 @@ function Paragraph(str, lanClass){
 
 function escapePunctuation(char){
 	switch(char){
-		case '?':
-			return "Question";
-		case ',':
-			return "Comma";
-		case '-':
-			return "Hyphen";
-		case '.':
-			return "Period";
-		case '#':
-			return "Hash";
-		case '@':
-			return "Logo";
-		default :
-			return char;
+		case '?': return "Question";
+		case ',': return "Comma";
+		case '-': return "Hyphen";
+		case '.': return "Period";
+		case '#': return "Hash";
+		case '@': return "Logo";
+		default : return char;
 	}
 }
 
