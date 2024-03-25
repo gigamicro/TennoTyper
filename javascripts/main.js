@@ -206,31 +206,26 @@ var grineer = new function(){
 	};
 
 	this.imgs = [];
-	chars = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'r', 's', 't', 'u', 'v', 'w', 'y', 'z', "Question", "Period", "Comma", "Hash", "At", '0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
+	chars = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'r', 's', 't', 'u', 'v', 'w', 'y', 'z', '?', '.', ',', '#', '@', '$', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
 	for(var a = 0; a < chars.length; a++){ // gets images and puts them in imgs table
+		this.imgs[chars[a]] = new Image();
 		switch(chars[a]){
-			case 'Question':
-				this.imgs['?'] = new Image();
-				this.imgs['?'].src = this.folder + this.pre + chars[a] + this.ext;
+			case '?':
+				this.imgs['?'].src = this.folder + this.pre + "Question" + this.ext;
 				break;
-			case 'Comma':
-				this.imgs[','] = new Image();
-				this.imgs[','].src = this.folder + this.pre + chars[a] + this.ext;
+			case ',':
+				this.imgs[','].src = this.folder + this.pre + "Comma" + this.ext;
 				break;
-			case 'Period':
-				this.imgs['.'] = new Image();
-				this.imgs['.'].src = this.folder + this.pre + chars[a] + this.ext;
+			case '.':
+				this.imgs['.'].src = this.folder + this.pre + "Period" + this.ext;
 				break;
-			case 'Hash':
-				this.imgs['#'] = new Image();
-				this.imgs['#'].src = this.folder + this.pre + chars[a] + this.ext;
+			case '#':
+				this.imgs['#'].src = this.folder + this.pre + "Hash" + this.ext;
 				break;
-			case 'At':
-				this.imgs['@'] = new Image();
-				this.imgs['@'].src = this.folder + this.pre + chars[a] + this.ext;
+			case '@':
+				this.imgs['@'].src = this.folder + this.pre + "Logo" + this.ext;
 				break;
 			default:
-				this.imgs[chars[a]] = new Image();
 				this.imgs[chars[a]].src = this.folder + this.pre + chars[a] + this.ext;
 		}
 	}
@@ -351,26 +346,20 @@ var tenno = new function(){
 	this.misc = [',', '.', '-', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
 
 	this.imgs = [];
-	this.chars = ['aye', 'ae', 'ow', 'aw', 'ee', 'i', 'e', 'a', 'u', 'oo' , 'o', 'th', 'dh', 'sh', 'zh', 'ch', 'kh', 'ng', 'p', 'b', 't', 'd', 's', 'z', 'j', 'k', 'g', 'f', 'v', 'm', 'n', 'h', 'r', 'l', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', "Period", "Comma", "Hyphen"];
+	this.chars = ['aye', 'ae', 'ow', 'aw', 'ee', 'i', 'e', 'a', 'u', 'oo' , 'o', 'th', 'dh', 'sh', 'zh', 'ch', 'kh', 'ng', 'p', 'b', 't', 'd', 's', 'z', 'j', 'k', 'g', 'f', 'v', 'm', 'n', 'h', 'r', 'l', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '.', ',', '-'];
 	for(var a = 0; a < this.chars.length; a++){
+		this.imgs[this.chars[a]] = new Image();
 		switch(this.chars[a]){
-			case 'Comma':
-				this.imgs[','] = new Image();
-				this.imgs[','].src = this.folder + this.pre + this.chars[a] + this.ext;
-				this.chars[a] = ',';
+			case ',':
+				this.imgs[this.chars[a]].src = this.folder + this.pre + "Comma" + this.ext;
 				break;
-			case 'Hyphen':
-				this.imgs['-'] = new Image();
-				this.imgs['-'].src = this.folder + this.pre + this.chars[a] + this.ext;
-				this.chars[a] = '-';
+			case '-':
+				this.imgs[this.chars[a]].src = this.folder + this.pre + "Hyphen" + this.ext;
 				break;
-			case 'Period':
-				this.imgs['.'] = new Image();
-				this.imgs['.'].src = this.folder + this.pre + this.chars[a] + this.ext;
-				this.chars[a] = '.';
+			case '.':
+				this.imgs[this.chars[a]].src = this.folder + this.pre + "Period" + this.ext;
 				break;
 			default:
-				this.imgs[this.chars[a]] = new Image();
 				this.imgs[this.chars[a]].src = this.folder + this.pre + this.chars[a] + this.ext;
 		}
 	}
@@ -1018,13 +1007,13 @@ var orokin = new function(){
 		let img = new Image();
 		switch(this.chars[a]){
 			case ',':
-				img.src = this.folder + this.pre + 'Comma' + this.ext;
+				img.src = this.folder + this.pre + "Comma" + this.ext;
 				break;
 			case '-':
-				img.src = this.folder + this.pre + 'Hyphen' + this.ext;
+				img.src = this.folder + this.pre + "Hyphen" + this.ext;
 				break;
 			case '.':
-				img.src = this.folder + this.pre + 'Period' + this.ext;
+				img.src = this.folder + this.pre + "Period" + this.ext;
 				break;
 			default:
 				img.src = this.folder + this.pre + this.chars[a] + this.ext;
