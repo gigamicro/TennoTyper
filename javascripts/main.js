@@ -1278,7 +1278,7 @@ var orokin = new function(){
 			vowelsLen = 0;
 		}
 
-		return letterOffsetX;
+		return letterOffsetX - this.spacing.LetterSpacing;
 	}
 
 	/**
@@ -1288,8 +1288,8 @@ var orokin = new function(){
 		let height = 0;
 		let img;
 
-		for(i in word){
-			img = this.imgs[word[i]];
+		for(ch of this.phoneticizecache(word)){
+			img = this.imgs[ch];
 			if(img == undefined) continue;
 
 			let h = img.height + this.vowelsOffset;
@@ -1302,7 +1302,7 @@ var orokin = new function(){
 	 * GetwordHeightOffset
 	 */
 	this.getWordHeightOffset = function(word){
-		return 0;
+		return this.vowelsOffset;
 	}
 
 	this.literal = tenno.literal;
