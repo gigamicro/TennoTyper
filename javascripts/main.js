@@ -240,17 +240,17 @@ var grineer = new function(){
 				this.imgs[chars[a]].src = this.folder + this.pre + chars[a] + this.ext;
 		}
 	}
-	this.bimgs = this.imgs;
+	this.bImgs = this.imgs;
 
 
 	this.placeWord = function(ctx, word){ // place left aligned images
 		var offset = 0;
 		var img;
 
-		var imgs = bold.checked ? this.imgs : this.bImgs;
+		var imgs = bold.checked ? this.bImgs : this.imgs;
 
 		for(letter in word){
-			img = this.imgs[word[letter]];
+			img = imgs[word[letter]];
 			if(img != undefined){
 				ctx.rect(offset, 0, img.width, img.height);
 				ctx.drawImage(img, offset, 0);
@@ -263,7 +263,7 @@ var grineer = new function(){
 		var len = 0;
 		var img;
 
-		var imgs = bold.checked ? this.imgs : this.bImgs;
+		var imgs = bold.checked ? this.bImgs : this.imgs;
 
 		for(letter in word){
 			//console.log("word:" + word + " letter:" + letter + " letterVal:" + word[letter] + " img:" + this.imgs[word[letter]] + " imgLen:" + this.imgs[word[letter]].width);
@@ -279,7 +279,7 @@ var grineer = new function(){
 		var height = 0;
 		var img;
 
-		var imgs = bold.checked ? this.imgs : this.bImgs;
+		var imgs = bold.checked ? this.bImgs : this.imgs;
 
 		for(letter in word){
 			img = imgs[word[letter]];
