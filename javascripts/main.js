@@ -189,6 +189,25 @@ function Paragraph(str, lanClass){
 	this.h -= lanClass.spacing.LineHeight; // deal with extra height spacing
 }
 
+function escapePunctuation(char){
+	switch(char){
+		case '?':
+			return "Question";
+		case ',':
+			return "Comma";
+		case '-':
+			return "Hyphen";
+		case '.':
+			return "Period";
+		case '#':
+			return "Hash";
+		case '@':
+			return "Logo";
+		default :
+			return char;
+	}
+}
+
 //grineer
 /*-------------------------------------------------*/
 
@@ -205,28 +224,10 @@ var grineer = new function(){
 	};
 
 	this.imgs = [];
-	this.chars = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'r', 's', 't', 'u', 'v', 'w', 'y', 'z', '?', '.', ',', '#', '@', '$', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
+	this.chars = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'r', 's', 't', 'u', 'v', 'w', 'y', 'z', '?', '.', ',', '#', '@'/*logo*/, '$', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
 	for(var a = 0; a < this.chars.length; a++){ // gets images and puts them in imgs table
 		this.imgs[this.chars[a]] = new Image();
-		switch(this.chars[a]){
-			case '?':
-				this.imgs['?'].src = this.folder + this.pre + "Question" + this.ext;
-				break;
-			case ',':
-				this.imgs[','].src = this.folder + this.pre + "Comma" + this.ext;
-				break;
-			case '.':
-				this.imgs['.'].src = this.folder + this.pre + "Period" + this.ext;
-				break;
-			case '#':
-				this.imgs['#'].src = this.folder + this.pre + "Hash" + this.ext;
-				break;
-			case '@':
-				this.imgs['@'].src = this.folder + this.pre + "Logo" + this.ext;
-				break;
-			default:
-				this.imgs[this.chars[a]].src = this.folder + this.pre + this.chars[a] + this.ext;
-		}
+		this.imgs[this.chars[a]].src = this.folder + this.pre + escapePunctuation(this.chars[a]) + this.ext;
 	}
 	this.bImgs = this.imgs;
 
@@ -348,19 +349,7 @@ var tenno = new function(){
 	this.chars = ['aye', 'ae', 'ow', 'aw', 'ee', 'i', 'e', 'a', 'u', 'oo' , 'o', 'th', 'dh', 'sh', 'zh', 'ch', 'kh', 'ng', 'p', 'b', 't', 'd', 's', 'z', 'j', 'k', 'g', 'f', 'v', 'm', 'n', 'h', 'r', 'l', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '.', ',', '-'];
 	for(var a = 0; a < this.chars.length; a++){
 		this.imgs[this.chars[a]] = new Image();
-		switch(this.chars[a]){
-			case ',':
-				this.imgs[this.chars[a]].src = this.folder + this.pre + "Comma" + this.ext;
-				break;
-			case '-':
-				this.imgs[this.chars[a]].src = this.folder + this.pre + "Hyphen" + this.ext;
-				break;
-			case '.':
-				this.imgs[this.chars[a]].src = this.folder + this.pre + "Period" + this.ext;
-				break;
-			default:
-				this.imgs[this.chars[a]].src = this.folder + this.pre + this.chars[a] + this.ext;
-		}
+		this.imgs[this.chars[a]].src = this.folder + this.pre + escapePunctuation(this.chars[a]) + this.ext;
 	}
 
 	this.placeWord = function(ctx, word){ // place centered images
@@ -1005,21 +994,8 @@ var orokin = new function(){
 	 * Mapping characters to images
 	 */
 	for(var a = 0; a < this.chars.length; a++){
-		let img = new Image();
-		switch(this.chars[a]){
-			case ',':
-				img.src = this.folder + this.pre + "Comma" + this.ext;
-				break;
-			case '-':
-				img.src = this.folder + this.pre + "Hyphen" + this.ext;
-				break;
-			case '.':
-				img.src = this.folder + this.pre + "Period" + this.ext;
-				break;
-			default:
-				img.src = this.folder + this.pre + this.chars[a] + this.ext;
-		}
-		this.imgs[this.chars[a]] = img;
+		this.imgs[this.chars[a]] = new Image();
+		this.imgs[this.chars[a]].src = this.folder + this.pre + escapePunctuation(this.chars[a]) + this.ext;
 	}
 
 	/**
