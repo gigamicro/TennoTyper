@@ -970,9 +970,17 @@ var orokin = new function(){
 	this.ext = ".png";
 	this.centered = true;
 
-	this.currOverrideState = null;
 	this.currWord = "";
+	this.currlit = null; // currWordArray is literal?
 	this.currWordArray = [];
+	this.phoneticizecache = function(word){
+		if(this.currWord != word || this.currlit != override.checked){
+			this.currWord = word;
+			this.currlit = override.checked;
+			this.currWordArray = this.phoneticize(word);
+		}
+		return this.currWordArray;
+	}
 
 	this.spacing = {
 		LineHeight: 20,
@@ -1002,12 +1010,6 @@ var orokin = new function(){
 	 * PlaceWord function
 	 */
 	this.placeWord = function(ctx, word){
-		if(this.currWord != word || this.currOverrideState != override.checked){
-			this.currWord = word;
-			this.currOverrideState = override.checked;
-			this.currWordArray = this.phoneticize(word);
-		}
-
 		const chType = {
 			Misc: 'misc',
 			Vowel: 'vowel',
@@ -1019,7 +1021,7 @@ var orokin = new function(){
 		let vowelsInRow = [];
 		let vowelsLen = 0;
 		
-		for(let ch of this.currWordArray){
+		for(let ch of this.phoneticizecache(word)){
 			img = this.imgs[ch];
 			
 			// Skip unregistered characters
@@ -1172,11 +1174,6 @@ var orokin = new function(){
 	 * GetWordLength function (same as placeWord function but don't draw imgs and returns "carriage" position)
 	 */
 	this.getWordLength = function(word){
-		if(this.currWord != word){
-			this.currWord = word;
-			this.currWordArray = this.phoneticize(word);
-		}
-
 		const chType = {
 			Misc: 'misc',
 			Vowel: 'vowel',
@@ -1188,7 +1185,7 @@ var orokin = new function(){
 		let vowelsInRow = [];
 		let vowelsLen = 0;
 		
-		for(let ch of this.currWordArray){
+		for(let ch of this.phoneticizecache(word)){
 			img = this.imgs[ch];
 			
 			// Skip unregistered characters
