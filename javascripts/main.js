@@ -7,18 +7,12 @@ var text = document.getElementById("text");
 var language = document.getElementById("language");
 var override = document.getElementById("override"); // tenno manual override button
 var bold = document.getElementById("bold"); // corpus bold option button
-	bold.parentElement.style.display = "none";
 var background = document.getElementById("background"); // background option button
 
 var js = {
 	path: "./javascripts/",
 	ext: ".js",
 };
-
-var offset = {
-	xOffset: 0,
-	yOffset: 0,
-}
 
 var languages = ["tenno", "orokin", "corpus", "grineer"];
 var cheatsheets = {};
