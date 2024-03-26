@@ -1017,7 +1017,7 @@ var tenno = new function(){
 
 		if (this == orokin && find(wordsArray[wordsArray.length-1], this.vowels)) wordsArray.push('h');
 
-		// console.log(word, "->", wordsArray);
+		if(debug) console.log(word, "->", wordsArray);
 		return wordsArray;
 	}
 }
