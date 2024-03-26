@@ -79,11 +79,7 @@ function saveImg(){
 /*-------------------------------------------------*/
 
 function find(item, array){
-	for(var a = 0; a < array.length; a++){
-		if(item == array[a]){
-			return true;
-		}
-	}
+	for (var a of array) if (item == a) return true;
 	return false;
 }
 
@@ -349,9 +345,9 @@ var tenno = new function(){
 
 	this.imgs = [];
 	this.chars = ['aye', 'ae', 'ow', 'aw', 'ee', 'i', 'e', 'a', 'u', 'oo' , 'o', 'th', 'dh', 'sh', 'zh', 'ch', 'kh', 'ng', 'p', 'b', 't', 'd', 's', 'z', 'j', 'k', 'g', 'f', 'v', 'm', 'n', 'h', 'r', 'l', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '.', ',', '-'];
-	for(var a = 0; a < this.chars.length; a++){
-		this.imgs[this.chars[a]] = new Image();
-		this.imgs[this.chars[a]].src = this.folder + this.pre + escapePunctuation(this.chars[a]) + this.ext;
+	for(var ch of this.chars){
+		this.imgs[ch] = new Image();
+		this.imgs[ch].src = this.folder + this.pre + escapePunctuation(ch) + this.ext;
 	}
 
 	this.placeWord = function(ctx, word){ // place centered images
@@ -999,9 +995,9 @@ var orokin = new function(){
 	/**
 	 * Mapping characters to images
 	 */
-	for(var a = 0; a < this.chars.length; a++){
-		this.imgs[this.chars[a]] = new Image();
-		this.imgs[this.chars[a]].src = this.folder + this.pre + escapePunctuation(this.chars[a]) + this.ext;
+	for(var ch of this.chars){
+		this.imgs[ch] = new Image();
+		this.imgs[ch].src = this.folder + this.pre + escapePunctuation(ch) + this.ext;
 	}
 
 	/**
