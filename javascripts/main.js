@@ -277,7 +277,7 @@ var grineer = new function(){
 	}
 
 	this.modify = function(str){
-		return str.replace(/qu/g, "kw").replace(/q/g, "kw").replace(/x/g, "ks")
+		return str.replace(/qu?/g, "kw").replace(/(?<=\W)x/g, "z").replace(/x/g, "ks")
 	}
 }
 
@@ -617,6 +617,15 @@ var tenno = new function(){
 		 */
 		for(var a = 0; a < word.length; a++){
 			switch(word[a]){
+				case 'q':
+					array.push('k');
+					array.push('oo');
+					if (a+1 < word.length && word[a+1] == 'u')a++;
+					break;
+				case 'x':
+					array.push('k');
+					array.push('s');
+					break;
 				case 'y':
 					array.push('ee');
 					break;
@@ -699,6 +708,9 @@ var tenno = new function(){
 						a++;
 						b = false;
 						break;
+					case 'q':
+						wordsArray.push('k');
+						if(word[a+1] == 'u') a++;
 					case 'w':
 						wordsArray.push('oo');
 						if(word[a+1] == 'a'){
@@ -938,8 +950,6 @@ var tenno = new function(){
 
 		return wordsArray;
 	}
-
-	this.modify = grineer.modify;
 }
 
 //orokin 1999
@@ -1308,8 +1318,6 @@ var orokin = new function(){
 	this.literal = tenno.literal;
 
 	this.phoneticize = tenno.phoneticize;
-
-	this.modify = grineer.modify;
 }
 
 //debugging flag
