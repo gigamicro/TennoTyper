@@ -652,6 +652,7 @@ var tenno = new function(){
 
 	/**
 	 * Returns word as array of phoneticized characters
+	 * https://www.thefreedictionary.com/words-containing-(substring) is handy
 	 */
 	this.phoneticize = function(word){ // return array of phoneticized chars, according to phoneticizeGuide.txt
 		var wordsArray = [];
@@ -690,22 +691,29 @@ var tenno = new function(){
 						break;
 					case 'o':
 						switch(word[a+1]){
-							case 'o':
 							case 'u':
+								if(wordsArray[wordsArray.length-1] == 'sh'){
+									b = false;
+									break;
+								}
+							case 'o':
 								wordsArray.push('oo');
+								a++;
 								break;
 							case 'w':
 								wordsArray.push('ow');
+								a++;
+								break;
+							case 'l':
+								wordsArray.push('o');
 								break;
 							default:
-								if(find(word[a+1], this.vowels) || find(word[a+1], this.misc) || word[a+1] == 'l'){
+								if(find(word[a+1], this.vowels) || find(word[a+1], this.misc) || (a+2 < word.length && find(word[a+2], this.vowels))){
 									wordsArray.push('o');
 								}else{
 									wordsArray.push('aw');
 								}
-								a--;
 						}
-						a++;
 						b = false;
 						break;
 					case 'q':
@@ -747,8 +755,12 @@ var tenno = new function(){
 					case 'a':
 						switch(word[a+1]){
 							case 'e':
-							case 'i':
 								wordsArray.push('ae');
+								a++
+								b = false;
+								break;
+							case 'i':
+								wordsArray.push('aye');
 								a++
 								b = false;
 								break;
@@ -822,6 +834,12 @@ var tenno = new function(){
 								a++;
 								b = false;
 								break;
+							case 'y':
+								wordsArray.push('aye');
+								if(a+2 < word.length && word[a+2] == 'e') a++;
+								a++;
+								b = false;
+								break;
 							default:
 						}
 						break;
@@ -834,8 +852,15 @@ var tenno = new function(){
 						}
 						break;
 					case 'i':
-						if(word[a+1] == 'e'){
+						if(a > 0 && word[a-1] == 'd'){
 							wordsArray.push('aye');
+							b = false;
+						}else if(word[a+1] == 'e'){
+							if(word[a-1] == 't' || word[a-1] == 'l' || word[a-1] == 'r'){
+								wordsArray.push('aye');
+							}else{
+								wordsArray.push('ee');
+							}
 							a++;
 							b = false;
 						}else if(word[a+1] == 'a'){
@@ -846,6 +871,10 @@ var tenno = new function(){
 								wordsArray.push('aye');
 								b = false;
 							}
+						}else if(wordsArray[wordsArray.length-1] == 'sh' && a+1 < word.length && word[a+1] == 'o'){
+							wordsArray.push('u');
+							a++;
+							b = false;
 						}
 						break;
 					case 'n':
@@ -857,6 +886,10 @@ var tenno = new function(){
 						break;
 					case 's':
 						if(word[a+1] == 'h'){
+							wordsArray.push('sh');
+							a++;
+							b = false;
+						}else if(word[a+1] == 's' && a+2 < word.length){
 							wordsArray.push('sh');
 							a++;
 							b = false;
@@ -874,14 +907,17 @@ var tenno = new function(){
 							}
 							a++;
 							b = false;
-						}else if(a < word.length-3){
-							if(word[a+1] == 'i' && word[a+2] == 'o' && word[a+3] == 'n'){
-								wordsArray.push('sh');
-								wordsArray.push('u');
-								wordsArray.push('m');
-								a += 3;
-								b = false;
-							}
+						}else if(word.slice(a,a+4) == 'tion'){
+							wordsArray.push('sh');
+							// wordsArray.push('u');
+							// wordsArray.push('m');// may have been a typo
+							// a += 3;
+							b = false;
+						}else if(a > 0 && a+1<word.length && word[a+1] == 'y'){
+							wordsArray.push('t');
+							wordsArray.push('ee');
+							a++;
+							b = false;
 						}
 						break;
 					case 'u':
@@ -905,7 +941,11 @@ var tenno = new function(){
 						}else if(word == 'flexure' || word.slice(a,a+3) == 'xua' || word.slice(a,a+5) == 'xious' || word.slice(a,a+4) == 'xion'){
 							wordsArray.push('k');
 							wordsArray.push('sh');
-						}else if(word[a+1]=='e' || word[a+1]=='i' || word[a+1]=='y'){//before stressed vowel (inaccurate rn)
+							if(word.slice(a,a+3) == 'xio'){
+								a+=2
+								wordsArray.push('u');
+							}
+						}else if(word[a+1]=='e' || word[a+1]=='y'){//before stressed vowel (inaccurate rn)
 							wordsArray.push('g');
 							wordsArray.push('z');
 						}else{
@@ -950,7 +990,12 @@ var tenno = new function(){
 						wordsArray.push('s');
 						break;
 					case 'y':
-						wordsArray.push('aye');
+						// 'ally' vs 'usually' etc makes this tough
+						if(a > 0 && find(word[a-1], this.vowels)){
+							wordsArray.push('aye');
+						}else{
+							wordsArray.push('ee');
+						}
 						break;
 					default:
 						wordsArray.push(word[a]);
