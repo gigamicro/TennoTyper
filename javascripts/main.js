@@ -1015,6 +1015,8 @@ var tenno = new function(){
 			}
 		}
 
+		if (this == orokin && find(wordsArray[wordsArray.length-1], this.vowels)) wordsArray.push('h');
+
 		// console.log(word, "->", wordsArray);
 		return wordsArray;
 	}
@@ -1101,8 +1103,7 @@ var orokin = new function(){
 				case chType.Misc:
 					// Draw remaining vowels before misc character
 					if(vowelsInRow.length > 0){
-						// Add sillent 'h'
-						img = this.imgs['h'];
+						img = new Image();
 					
 						let cOffsetX = letterOffsetX;
 						let vOffsetX = letterOffsetX;
@@ -1196,8 +1197,7 @@ var orokin = new function(){
 
 		// Draw remaining vowels on end of the word
 		if(vowelsInRow.length > 0){
-			// Add sillent 'h'
-			img = this.imgs['h'];
+			img = new Image();
 
 			let cOffsetX = letterOffsetX;
 			let vOffsetX = letterOffsetX;
@@ -1264,8 +1264,7 @@ var orokin = new function(){
 			switch(curCh){
 				case chType.Misc:
 					if(vowelsInRow.length > 0){
-						// Add sillent 'h'
-						img = this.imgs['h'];
+						img = new Image();
 					
 						let cOffsetX = letterOffsetX;
 						let vOffsetX = letterOffsetX;
@@ -1328,8 +1327,7 @@ var orokin = new function(){
 
 		// Get length of remaining vowels on end of the word
 		if(vowelsInRow.length > 0){
-			// Add sillent 'h'
-			img = this.imgs['h'];
+			img = new Image();
 
 			let cOffsetX = letterOffsetX;
 			let vOffsetX = letterOffsetX;
@@ -1364,10 +1362,9 @@ var orokin = new function(){
 	 */
 	this.getWordHeight = function(word){
 		let height = 0;
-		let img;
 
 		for(ch of this.phoneticizecache(word)){
-			img = this.imgs[ch];
+			let img = this.imgs[ch];
 			if(img == undefined) continue;
 
 			let h = img.height + this.vowelsOffset;
