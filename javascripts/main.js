@@ -559,7 +559,7 @@ var tenno = new function(){
 					}
 
 					pCha = 2;
-				}else{ // cosonant
+				}else{ // consonant
 					// update width vars
 					var b = img.height / Math.sin(this.rot); // xOff if this ends below drawline
 					var c = img.width / Math.cos(this.rot); // xOff is this ends above drawline
@@ -722,8 +722,10 @@ var tenno = new function(){
 					case 'y':
 						switch(word[a+1]){
 							case 'i':
-								wordsArray.push('aye');
 								a++;
+							case 'r':
+							case 'l':
+								wordsArray.push('aye');
 								break;
 							case 'o':
 								if(a < word.length-2 && word[a+2] == 'u'){
@@ -893,12 +895,31 @@ var tenno = new function(){
 							}
 						}
 						break;
+					case 'x':
+						//reverse order as in wikipedia article for X
+						if(a == 0){
+							wordsArray.push('z');
+						}else if(word.slice(a-2,a+3)=='luxur'){
+							wordsArray.push('g');
+							wordsArray.push('zh');
+						}else if(word == 'flexure' || word.slice(a,a+3) == 'xua' || word.slice(a,a+5) == 'xious' || word.slice(a,a+4) == 'xion'){
+							wordsArray.push('k');
+							wordsArray.push('sh');
+						}else if(word[a+1]=='e' || word[a+1]=='i' || word[a+1]=='y'){//before stressed vowel (inaccurate rn)
+							wordsArray.push('g');
+							wordsArray.push('z');
+						}else{
+							wordsArray.push('k');
+							wordsArray.push('s');
+						}
+						b = false;
+						break;
 					default:
 				}
 				if(b){ // true by default
 					wordsArray.push(word[a]);
 				}
-			}else{ // a is the last char in word
+			}else{ // word[a] is the last char in word
 				switch(word[a]){
 					case 'c':
 						wordsArray.push('k');
@@ -908,15 +929,6 @@ var tenno = new function(){
 							wordsArray.push('e');
 						}
 						break;
-					case 'o':
-						wordsArray.push('o');
-						break;
-					case 'w':
-						wordsArray.push('oo');
-						break;
-					case 'x':
-						wordsArray.push('z');
-						break;
 					case 'i':
 						if(a == 0){ // if 'i' is the only letter
 							wordsArray.push('aye');
@@ -924,16 +936,27 @@ var tenno = new function(){
 							wordsArray.push('i');
 						}
 						break;
-					case 'y': // y[end] = aye
+					case 'o':
+						wordsArray.push('o');
+						break;
+					case 'q':
+						wordsArray.push('k');
+						break;
+					case 'w':
+						wordsArray.push('oo');
+						break;
+					case 'x':
+						wordsArray.push('k');
+						wordsArray.push('s');
+						break;
+					case 'y':
 						wordsArray.push('aye');
 						break;
 					default:
 						wordsArray.push(word[a]);
 				}
 			}
-			//console.log(word[a] + " -> " + wordsArray[wordsArray.length-1]);
 		}
-		//console.log(" ");
 
 		// remove duplicates and any undefined chars from the array
 		for(var a = 0; a < wordsArray.length; a++){
@@ -947,6 +970,7 @@ var tenno = new function(){
 			}
 		}
 
+		// console.log(word, "->", wordsArray);
 		return wordsArray;
 	}
 }
