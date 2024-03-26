@@ -1396,7 +1396,5 @@ function keydown(evt) {
     if (!evt) evt = event;
     if (evt.altKey) {
         debugBox.parentElement.style.display = "";
-        debugBox.checked = debug = !debugBox.checked;
-        draw();
     }
 }
