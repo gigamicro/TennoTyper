@@ -615,12 +615,23 @@ var tenno = new function(){
 		/**
 		 * For each character in word swap to dialect character
 		 */
-		for(var a = 0; a < word.length; a++){
-			switch(word[a]){
+		var a = 0;
+		while(a < word.length){
+			var hit = true;
+			while(hit){
+				hit = false;
+				for(glyph of this.chars){
+					if(glyph != word.slice(a,a+glyph.length)) continue;
+
+					array.push(glyph);
+					a += glyph.length;
+					hit = true;
+					break;
+				}
+			}
+			switch(word[a++]){
 				case 'q':
 					array.push('k');
-					array.push('oo');
-					if (a+1 < word.length && word[a+1] == 'u')a++;
 					break;
 				case 'x':
 					array.push('k');
@@ -633,18 +644,11 @@ var tenno = new function(){
 					array.push('oo');
 					break;
 				case 'c':
-					if(!(a < word.length-1 && word[a+1] == 'h')){
-						array.push('k');
-						break;
-					}
+					array.push('k');
+					break;
 				default:
-					for(glyph of this.chars){
-						if(glyph != word.slice(a,a+glyph.length)) continue;
-
-						array.push(glyph);
-						a += glyph.length - 1;
-						break;
-					}
+					// array.push('-');
+					break;
 			}
 		}
 		return array;
@@ -935,8 +939,8 @@ var tenno = new function(){
 		}
 		//console.log(" ");
 
-		var a = 0; // remove duplicates and any undefined chars from the array
-		while(a < wordsArray.length){
+		// remove duplicates and any undefined chars from the array
+		for(var a = 0; a < wordsArray.length; a++){
 			if(!find(wordsArray[a], this.misc)){
 				while(a < wordsArray.length-1 && wordsArray[a] == wordsArray[a+1]){
 					wordsArray.splice(a, 1); // remove duplicates
@@ -945,7 +949,6 @@ var tenno = new function(){
 			if(this.imgs[wordsArray[a]] == undefined){ // remove undefined chars
 				wordsArray.splice(a, 1);
 			}
-			a++;
 		}
 
 		return wordsArray;
