@@ -695,6 +695,7 @@ var tenno = new function(){
 									break;
 								}
 								wordsArray.push('ch');
+								a++;
 								break;
 							case 'o':
 								if(a < word.length-2 && word[a+2] == 'u'){
@@ -703,11 +704,10 @@ var tenno = new function(){
 									a++; // account for removing 3 chars
 									break;
 								}
+								a++;
 							default:
 								wordsArray.push('k');
-								a--; // account for only removing 1 char
 						}
-						a++;
 						b = false;
 						break;
 					case 'o':
@@ -901,11 +901,7 @@ var tenno = new function(){
 						}
 						break;
 					case 's':
-						if(word[a+1] == 'h'){
-							wordsArray.push('sh');
-							a++;
-							b = false;
-						}else if(word[a+1] == 's' && a+2 < word.length){
+						if(word[a+1] == 'h' || word[a+1] == 's' && a+2 < word.length){
 							wordsArray.push('sh');
 							a++;
 							b = false;
