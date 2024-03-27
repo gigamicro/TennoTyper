@@ -681,13 +681,11 @@ var tenno = new function(){
 	this.phoneticize = function(word){ // return array of phoneticized chars, according to phoneticizeGuide.txt
 		var wordsArray = [];
 
-		if(override.checked){
-			return this.literal(word);
-		}
+		if (override.checked) return this.literal(word);
 
 		for(var a = 0; a < word.length; a++){
 			if(a < word.length-1){ // if there is at least 1 char after a
-				var b = true; // true if program should break out of following main switch, only becomes false for fallthrough
+				var b = true; // should the char be pushed after this switch?
 				switch(word[a]){
 					case 'a':
 						switch(word[a+1]){
@@ -702,14 +700,14 @@ var tenno = new function(){
 								b = false;
 								break;
 							case 'y':
-								if(a < word.length-2 && word[a+2] == 'e'){
+								if(a+2 < word.length && word[a+2] == 'e'){
 									wordsArray.push('aye');
 									a += 2;
 									b = false;
 									break;
 								}
 								wordsArray.push('ae');
-								a++
+								a++;
 								b = false;
 								break;
 							case 'w':
@@ -972,10 +970,9 @@ var tenno = new function(){
 					case 'c':
 						wordsArray.push('k');
 						break;
-					case 'e': // e[end] = silent
-						if(a == 0){ // e is the only letter
-							wordsArray.push('e');
-						}
+					case 'e':
+						if (a == 0) wordsArray.push('ee');
+						//silent
 						break;
 					case 'i':
 						if(a == 0){ // if 'i' is the only letter
@@ -1018,14 +1015,13 @@ var tenno = new function(){
 			}
 		}
 
-		// remove duplicates and any undefined chars from the array
 		for(var a = 0; a < wordsArray.length; a++){
 			if(!find(wordsArray[a], this.misc)){
 				while(a < wordsArray.length-1 && wordsArray[a] == wordsArray[a+1]){
-					wordsArray.splice(a, 1); // remove duplicates
+					wordsArray.splice(a, 1); // remove duplicate
 				}
 			}
-			if(this.imgs[wordsArray[a]] == undefined){ // remove undefined chars
+			if(this.imgs[wordsArray[a]] == undefined){
 				wordsArray.splice(a, 1);
 			}
 		}
