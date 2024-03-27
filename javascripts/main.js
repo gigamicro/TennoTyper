@@ -827,7 +827,7 @@ var tenno = new function(){
 					case 'l': break;
 					case 'm': break;
 					case 'n':
-						if(a == word.length-2 && word[a+1] == 'g'){
+						if(a+1 < word.length && word[a+1] == 'g'){
 							wordsArray.push('ng');
 							a++;
 							b = false;
