@@ -364,12 +364,14 @@ var tenno = new function(){
 	this.vowels = ['a', 'e', 'i', 'o', 'u', 'w', 'y', 'ee', 'aw', 'oo', 'ae', 'aye', 'ow'];
 	this.misc = [',', '.', '-', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
 	this.fortis = this.vowels+['dh', 'zh', 'kh', 'ng', 'b', 'd', 'z', 'j', 'g', 'v', 'm', 'n'/*?*/, 'r'/*?*/, 'l'];
+	this.consonants = [];
 
 	this.imgs = [];
 	this.chars = ['aye', 'ae', 'ow', 'aw', 'ee', 'i', 'e', 'a', 'u', 'oo' , 'o', 'th', 'dh', 'sh', 'zh', 'ch', 'kh', 'ng', 'p', 'b', 't', 'd', 's', 'z', 'j', 'k', 'g', 'f', 'v', 'm', 'n', 'h', 'r', 'l', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '.', ',', '-'];
 	for(var ch of this.chars){
 		this.imgs[ch] = new Image();
 		this.imgs[ch].src = this.folder + this.pre + escapePunctuation(ch) + this.ext;
+		if (!this.vowels.includes(ch) && !this.misc.includes(ch)) this.consonants.push(ch);
 	}
 
 	this.placeWord = function(ctx, word){ // place centered images
@@ -716,16 +718,15 @@ var tenno = new function(){
 								b = false;
 								break;
 							default:
-								if(a < word.length-2 && word[a+2] == 'e'){
-									if(!(find(word[a+1], this.vowels) || find(word[a+1], this.misc))){ // if consonant
-										if(word[a+1] == 'r'){
-											wordsArray.push('aw');
-										}else{
-											wordsArray.push('ae');
-										}
-										b = false;
-										break;
+								if(a+2 < word.length && word[a+2] == 'e'
+									&& this.consonants.includes(word[a+1])){
+									if(word[a+1] == 'r'){
+										wordsArray.push('aw');
+									}else{
+										wordsArray.push('ae');
 									}
+									b = false;
+									break;
 								}
 						}
 						break;
@@ -902,14 +903,10 @@ var tenno = new function(){
 						}
 						break;
 					case 'u':
-						if(a < word.length-2){
-							if(!(find(word[a+1], this.vowels) || find(word[a+1], this.misc))){ // if a+1 = consonant
-								if(find(word[a+2], this.vowels)){ // if a+2 = vowel
-									wordsArray.push('oo');
-									b = false;
-									break;
-								}
-							}
+						if(a < word.length-2 && find(word[a+1], this.consonants) && find(word[a+2], this.vowels)){
+							wordsArray.push('oo');
+							b = false;
+							break;
 						}
 						break;
 					case 'v': break;
@@ -1074,6 +1071,7 @@ var orokin = new function(){
 
 	// categories
 	this.vowels = tenno.vowels;
+	this.consonants = tenno.consonants;
 	this.fortis = tenno.fortis;
 	this.misc = tenno.misc;
 
