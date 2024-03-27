@@ -100,8 +100,7 @@ document.onkeydown = function(evt) {
 /*-------------------------------------------------*/
 
 function find(item, array){
-	for (var a of array) if (item == a) return true;
-	return false;
+	return array.includes(item)
 }
 
 /*
