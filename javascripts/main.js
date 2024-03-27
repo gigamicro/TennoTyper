@@ -84,14 +84,15 @@ document.onkeydown = function(evt) {
 		debugBox.parentElement.style.display = "";
 	}
 	// if (debug) console.log(evt.keyCode)
-	if (false // the key pressed isn't any of:
+	if (document.body == document.activeElement) text.focus()
+	else if (false // the key pressed isn't any of:
 		|| evt.keyCode == 32 // space
 		|| evt.keyCode == 9  // tab
 		// || evt.keyCode == 17 // ctrl
 		|| evt.keyCode == 16 // shift
 		|| evt.keyCode == 18 // alt
 		|| evt.keyCode == 13 // enter
-		|| document.activeElement==language && (evt.keyCode == 38 || evt.keyCode == 40) // up/down on dropdown
+		|| document.activeElement==language && (evt.keyCode >= 37 && evt.keyCode <= 40) // arrow keys on dropdown
 	) ;else text.focus()
 }
 
