@@ -543,11 +543,11 @@ var tenno = new function(){
 					var off = dim[0] * Math.cos(this.rot);
 					var pTail = img.height * Math.sin(this.rot); // potential tail, img should be the last vowel
 					if(exta < 0){ // update width for consonant above drawline
-						console.log(-exta + " < " + off);
+						if (debug) console.log(-exta + " < " + off);
 						if(-exta < off){
 							netW -= exta;
 						}else{
-							console.log("width:" + dim[0] + " exta:" + -exta + " off:" + off);
+							if (debug) console.log("width:" + dim[0] + " exta:" + -exta + " off:" + off);
 							if(dim[0] > -exta){
 								netW += off;
 							}else{
