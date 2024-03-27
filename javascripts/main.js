@@ -686,93 +686,6 @@ var tenno = new function(){
 			if(a < word.length-1){ // if there is at least 1 char after a
 				var b = true; // true if program should break out of following main switch, only becomes false for fallthrough
 				switch(word[a]){
-				//handle special cases where singletons are not directly matched
-					case 'c':
-						switch(word[a+1]){
-							case 'h':
-								if(a > 0 && find(word[a-1], this.vowels)){
-									wordsArray.push('kh');
-									break;
-								}
-								wordsArray.push('ch');
-								a++;
-								break;
-							case 'o':
-								if(a < word.length-2 && word[a+2] == 'u'){
-									wordsArray.push(word[a]);
-									wordsArray.push('ow');
-									a++; // account for removing 3 chars
-									break;
-								}
-								a++;
-							default:
-								wordsArray.push('k');
-						}
-						b = false;
-						break;
-					case 'o':
-						switch(word[a+1]){
-							case 'u':
-								if(wordsArray[wordsArray.length-1] == 'sh'){
-									b = false;
-									break;
-								}
-							case 'o':
-								wordsArray.push('oo');
-								a++;
-								break;
-							case 'w':
-								wordsArray.push('ow');
-								a++;
-								break;
-							case 'l':
-								wordsArray.push('o');
-								break;
-							default:
-								if(find(word[a+1], this.vowels) || find(word[a+1], this.misc) || (a+2 < word.length && find(word[a+2], this.vowels))){
-									wordsArray.push('o');
-								}else{
-									wordsArray.push('aw');
-								}
-						}
-						b = false;
-						break;
-					case 'q':
-						wordsArray.push('k');
-						if(word[a+1] == 'u') a++;
-					case 'w':
-						wordsArray.push('oo');
-						if(word[a+1] == 'a'){
-							wordsArray.push('o');
-							a++;
-						}
-						b = false;
-						break;
-					case 'y':
-						switch(word[a+1]){
-							case 'i':
-								a++;
-							case 'r':
-							case 'l':
-								wordsArray.push('aye');
-								break;
-							case 'o':
-								if(a < word.length-2 && word[a+2] == 'u'){
-									if(word.length == 3 || find(word[a+3], this.misc)){
-										wordsArray.push('ee');
-										wordsArray.push('oo');
-										wordsArray.push('h');
-										a += 2;
-										break;
-									}
-								}
-							default:
-								wordsArray.push('ee');
-						}
-						b = false;
-						break;
-
-				//handle normal cases
 					case 'a':
 						switch(word[a+1]){
 							case 'e':
@@ -825,6 +738,20 @@ var tenno = new function(){
 							}
 						}
 						break;
+					case 'c': b = false;
+						switch(word[a+1]){
+							case 'h':
+								if(a > 0 && find(word[a-1], this.vowels)){
+									wordsArray.push('kh');
+									break;
+								}
+								wordsArray.push('ch');
+								a++;
+								break;
+							default:
+								wordsArray.push('k');
+						}
+						break;
 					case 'd':
 						switch(word[a+1]){
 							case 'h':
@@ -859,6 +786,7 @@ var tenno = new function(){
 							default:
 						}
 						break;
+					case 'f': break;
 					case 'g':
 						if(word[a+1] == 'e'){
 							wordsArray.push('j');
@@ -867,6 +795,7 @@ var tenno = new function(){
 							b = false;
 						}
 						break;
+					case 'h': break;
 					case 'i':
 						if(a > 0 && word[a-1] == 'd'){
 							wordsArray.push('aye');
@@ -893,6 +822,10 @@ var tenno = new function(){
 							b = false;
 						}
 						break;
+					case 'j': break;
+					case 'k': break;
+					case 'l': break;
+					case 'm': break;
 					case 'n':
 						if(a == word.length-2 && word[a+1] == 'g'){
 							wordsArray.push('ng');
@@ -900,6 +833,41 @@ var tenno = new function(){
 							b = false;
 						}
 						break;
+					case 'o': b = false;
+						switch(word[a+1]){
+							case 'u':
+								if(wordsArray[wordsArray.length-1] == 'sh'){
+									b = false;
+									break;
+								}
+							case 'o':
+								wordsArray.push('oo');
+								a++;
+								break;
+							case 'w':
+								wordsArray.push('ow');
+								a++;
+								break;
+							case 'l':
+								wordsArray.push('o');
+								break;
+							default:
+								if(find(word[a+1], this.vowels) || find(word[a+1], this.misc) || (a+2 < word.length && find(word[a+2], this.vowels))){
+									wordsArray.push('o');
+								}else{
+									wordsArray.push('aw');
+								}
+						}
+						break;
+					case 'p': break;
+					case 'q': b = false;
+						wordsArray.push('k');
+						if(word[a+1] == 'u'){
+							wordsArray.push('oo');
+							a++;
+						}
+						break;
+					case 'r': break;
 					case 's':
 						if(word[a+1] == 'h' || word[a+1] == 's' && a+2 < word.length){
 							wordsArray.push('sh');
@@ -943,7 +911,15 @@ var tenno = new function(){
 							}
 						}
 						break;
-					case 'x':
+					case 'v': break;
+					case 'w': b = false;
+						wordsArray.push('oo');
+						if(word[a+1] == 'a'){
+							wordsArray.push('o');
+							a++;
+						}
+						break;
+					case 'x': b = false;
 						//reverse order as in wikipedia article for X
 						if(a == 0){
 							wordsArray.push('z');
@@ -964,8 +940,30 @@ var tenno = new function(){
 							wordsArray.push('k');
 							wordsArray.push('s');
 						}
-						b = false;
 						break;
+					case 'y': b = false;
+						switch(word[a+1]){
+							case 'i':
+								a++;
+							case 'r':
+							case 'l':
+								wordsArray.push('aye');
+								break;
+							case 'o':
+								if(a < word.length-2 && word[a+2] == 'u'){
+									if(word.length == 3 || find(word[a+3], this.misc)){
+										wordsArray.push('ee');
+										wordsArray.push('oo');
+										wordsArray.push('h');
+										a += 2;
+										break;
+									}
+								}
+							default:
+								wordsArray.push('ee');
+						}
+						break;
+					case 'z': break;
 					default:
 				}
 				if(b){ // true by default
