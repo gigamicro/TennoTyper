@@ -743,7 +743,7 @@ var tenno = new function(){
 					case 'c': b = false;
 						switch(word[a+1]){
 							case 'h':
-								if(a > 0 && find(word[a-1], this.vowels)){
+								if(a > 0 && find(wordsArray[wordsArray.length-1], this.vowels)){
 									wordsArray.push('kh');
 									break;
 								}
@@ -1006,7 +1006,7 @@ var tenno = new function(){
 						break;
 					case 'y':
 						// 'ally' vs 'usually' etc makes this tough
-						if(a > 0 && find(word[a-1], this.vowels)){
+						if(a > 0 && find(wordsArray[wordsArray.length-1], this.vowels)){
 							wordsArray.push('aye');
 						}else{
 							wordsArray.push('ee');
