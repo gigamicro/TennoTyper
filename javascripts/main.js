@@ -362,6 +362,7 @@ var tenno = new function(){
 
 	this.vowels = ['a', 'e', 'i', 'o', 'u', 'w', 'y', 'ee', 'aw', 'oo', 'ae', 'aye', 'ow'];
 	this.misc = [',', '.', '-', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
+	this.fortis = this.vowels+['dh', 'zh', 'kh', 'ng', 'b', 'd', 'z', 'j', 'g', 'v', 'm', 'n'/*?*/, 'r'/*?*/, 'l'];
 
 	this.imgs = [];
 	this.chars = ['aye', 'ae', 'ow', 'aw', 'ee', 'i', 'e', 'a', 'u', 'oo' , 'o', 'th', 'dh', 'sh', 'zh', 'ch', 'kh', 'ng', 'p', 'b', 't', 'd', 's', 'z', 'j', 'k', 'g', 'f', 'v', 'm', 'n', 'h', 'r', 'l', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '.', ',', '-'];
@@ -800,11 +801,6 @@ var tenno = new function(){
 								a++;
 								b = false;
 								break;
-							case 's':
-								wordsArray.push('zh');
-								a++;
-								b = false;
-								break;
 							default:
 								if(a < word.length-2 && word[a+2] == 'e'){
 									if(!(find(word[a+1], this.vowels) || find(word[a+1], this.misc))){ // if consonant
@@ -1002,6 +998,13 @@ var tenno = new function(){
 					case 'q':
 						wordsArray.push('k');
 						break;
+					case 's':
+						if(wordsArray.length > 0 && find(wordsArray[wordsArray.length-1], this.fortis)){
+							wordsArray.push('z');
+						}else{
+							wordsArray.push('s');
+						}
+						break;
 					case 'w':
 						wordsArray.push('oo');
 						break;
@@ -1078,6 +1081,7 @@ var orokin = new function(){
 	 * Characters dictionaries
 	 */
 	this.vowels = tenno.vowels;
+	this.fortis = tenno.fortis;
 	this.misc = tenno.misc;
 
 	this.imgs = [];
