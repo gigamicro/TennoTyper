@@ -1,7 +1,26 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css">
+		<style>
+			html, body {
+				/* width:  calc(100% - 4px); */
+				/* height: calc(100% - 4px); */
+				margin: 2px;
+				font-family: optima; /* note- since this is not imported most people will see their default font */
+				font-size: 87%;
+				background-color: #F0F0F0;
+				color: #0F0F0F;
+			}
+
+			canvas {
+				margin: 4px auto;
+				display: block;
+			}
+
+			button, select {
+				font-size: inherit;
+			}
+		</style>
 		<meta name="description" content="Convert English to Tenno Script, Orokin Monospace, Corpus, or Grineer">
 		<meta name="keywords" content="warframe,tenno,orokin,corpus,grineer,language,translate,translator,english">
 		<meta name="author" content="Clarvel & others">
@@ -13,8 +32,8 @@
 		<table>
 			<tr>
 				<td>
-					<a href="http://www.warframe.com">
-						<img src="images/logo.png" style="border:0">
+					<a href="http://www.warframe.com" style="display:block;">
+						<img src="images/logo.png"/>
 					</a>
 				</td>
 				<td>
@@ -37,7 +56,7 @@
 					<label for="bold"    ><input type="checkbox" onchange="draw()" id="bold"    >Bold</label>
 					<br>
 					<button type="button" id="cheat" onClick="cheatsheet()">CheatSheet</button>
-					<label for="debug" style="display:none;"><br><input type="checkbox" id="debug" onchange="debug=this.checked; draw()">Show Guide (alt)</label>
+					<label for="debug" style="display:none;"><br><input type="checkbox" id="debug" onchange="debug=this.checked; draw()">Debug</label>
 				</td>
 			</tr>
 		</table>
