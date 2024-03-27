@@ -360,6 +360,7 @@ var tenno = new function(){
 		LetterSpacing: 0,
 	};
 
+	// categories
 	this.vowels = ['a', 'e', 'i', 'o', 'u', 'w', 'y', 'ee', 'aw', 'oo', 'ae', 'aye', 'ow'];
 	this.misc = [',', '.', '-', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
 	this.fortis = this.vowels+['dh', 'zh', 'kh', 'ng', 'b', 'd', 'z', 'j', 'g', 'v', 'm', 'n'/*?*/, 'r'/*?*/, 'l'];
@@ -1071,27 +1072,18 @@ var orokin = new function(){
 	};
 	this.vowelsOffset = 12;
 
-	/**
-	 * Characters dictionaries
-	 */
+	// categories
 	this.vowels = tenno.vowels;
 	this.fortis = tenno.fortis;
 	this.misc = tenno.misc;
 
 	this.imgs = [];
 	this.chars = tenno.chars;
-	
-	/**
-	 * Mapping characters to images
-	 */
 	for(var ch of this.chars){
 		this.imgs[ch] = new Image();
 		this.imgs[ch].src = this.folder + this.pre + escapePunctuation(ch) + this.ext;
 	}
 
-	/**
-	 * PlaceWord function
-	 */
 	this.placeWord = function(ctx, word){
 		const chType = {
 			Misc: 'misc',
@@ -1251,10 +1243,8 @@ var orokin = new function(){
 		}
 	}
 
-	/**
-	 * GetWordLength function (same as placeWord function but don't draw imgs and returns "carriage" position)
-	 */
 	this.getWordLength = function(word){
+		//Same as placeWord function but doesn't draw images and returns "carriage" position
 		const chType = {
 			Misc: 'misc',
 			Vowel: 'vowel',
@@ -1375,9 +1365,6 @@ var orokin = new function(){
 		return letterOffsetX - this.spacing.LetterSpacing;
 	}
 
-	/**
-	 * GetWordHeight function
-	 */
 	this.getWordHeight = function(word){
 		let height = 0;
 
@@ -1391,9 +1378,6 @@ var orokin = new function(){
 		return height;
 	}
 
-	/**
-	 * GetwordHeightOffset
-	 */
 	this.getWordHeightOffset = function(word){
 		return this.vowelsOffset;
 	}
