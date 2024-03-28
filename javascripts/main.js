@@ -1483,5 +1483,3 @@ var orokin = new function(){
 
 	this.phoneticize = tenno.phoneticize;
 }
-
-CMUdict.dictload().then(draw)
