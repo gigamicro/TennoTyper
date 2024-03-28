@@ -243,8 +243,10 @@ var CMUdict = new function(){
 	}
 	// call this one to load the dictionary
 	this._dictload = async function(){
+		var response = await fetch(this.uri)
+		if(!response.ok) return Promise.reject(response)
 		this.dict = {}
-		let text = await fetch(this.uri).then(response => response.text())
+		let text = await response.text()
 		let regex = /^(\S+)  (.+)$/
 		for (let line of text.split('\n')){
 			if (line.match(/^;;;/)) continue // comment
