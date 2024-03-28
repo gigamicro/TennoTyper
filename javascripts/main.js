@@ -967,6 +967,9 @@ var tenno = new function(){
 				}
 			}else{ // word[a] is the last char in word
 				switch(word[a]){
+					case 'a':
+						wordsArray.push('u');
+						break;
 					case 'c':
 						wordsArray.push('k');
 						break;
