@@ -297,7 +297,7 @@ var CMUdict = new function(){
 				let sregex = /^([A-Z]+)([0-2]?)$/
 				let smatch = symbol.match(sregex)
 				if (!smatch){console.log(symbol,"in line",line,"doesn't match",sregex);continue}
-				this.dict[word].concat(this.dictparsekey[smatch[1]])
+				this.dict[word]=this.dict[word].concat(this.dictparsekey[smatch[1]])
 			}
 			// console.log(line,'->',this.dict[word])
 		}
@@ -306,7 +306,7 @@ var CMUdict = new function(){
 	// this.promise = this.dictload()
 	this.query = function(word){
 		if (typeof word !== 'string') return console.log('word',word,'is not a string')
-		// if (typeof this.dict !== 'object') return console.log('CMSdict.query(',word,'): no dictionary, promise =',this.promise)
+		if (typeof this.dict !== 'object') return console.log('CMSdict.query(',word,'): no dictionary, promise =',this.promise)
 		return this.dict[word.toUpperCase()]
 	}
 	this._query = async function(word){
@@ -781,6 +781,10 @@ var tenno = new function(){
 		var wordsArray = [];
 
 		if (override.checked) return this.literal(word);
+
+		var cmu = CMUdict.query(word);
+		if (cmu && cmu.length > 0) return cmu;
+		if (debug) console.log('non-dictionary word:',word);
 
 		for(var a = 0; a < word.length; a++){
 			if(a < word.length-1){ // if there is at least 1 char after a
@@ -1480,4 +1484,4 @@ var orokin = new function(){
 	this.phoneticize = tenno.phoneticize;
 }
 
-CMUdict.dictload()
+CMUdict.dictload().then(draw)
