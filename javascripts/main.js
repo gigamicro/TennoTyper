@@ -8,6 +8,7 @@ var language = document.getElementById("language");
 var override = document.getElementById("override"); // tenno manual override button
 var bold = document.getElementById("bold"); // corpus bold option button
 var background = document.getElementById("background"); // background option button
+var dict = document.getElementById("dict"); // phonetic dictionary load button
 
 var js = {
 	path: "./javascripts/",
@@ -30,21 +31,25 @@ function draw(){
 	switch(language.value){
 		case "corpus":
 			override.parentElement.style.display = "none";
+			dict.parentElement.style.display = "none";
 			bold.parentElement.style.display = "";
 			placeString(ctx, str, corpus);
 			break;
 		case "grineer":
 			override.parentElement.style.display = "none";
+			dict.parentElement.style.display = "none";
 			bold.parentElement.style.display = "none";
 			placeString(ctx, str, grineer);
 			break;
 		case "tenno":
 			override.parentElement.style.display = "";
+			dict.parentElement.style.display = "";
 			bold.parentElement.style.display = "none";
 			placeString(ctx, str, tenno);
 			break;
 		case "orokin":
 			override.parentElement.style.display = "";
+			dict.parentElement.style.display = "";
 			bold.parentElement.style.display = "none";
 			placeString(ctx, str, orokin);
 			break;

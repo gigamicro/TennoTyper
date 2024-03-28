@@ -58,7 +58,7 @@
 				<label for="bold"    ><input type="checkbox" onchange="draw()" id="bold"    >Bold</label>
 				<br><button type="button" id="cheat" onClick="cheatsheet()">CheatSheet</button>
 				<label for="debug" style="display:none;"><input type="checkbox" id="debug" onchange="debug=this.checked; draw()">Debug</label>
-				<br><button type="button" id="dict" onClick="dictload().then(()=>this.style.display='none').catch(r=>this.innerText=r.statusText);">load</button> <a href="cmu/cmudict-0.7b">dictionary</a> (3.72MB)
+				<label for="dict"><br><button type="button" id="dict" onClick="dictload().then(()=>this.style.display='none').catch(r=>this.innerText=r.statusText);">load</button> <a href="cmu/cmudict-0.7b">dictionary</a> (3.72MB)</label>
 			</td>
 		</table>
 		<canvas id="renderWindow">Your browser does not support the HTML5 canvas tag.</canvas>
