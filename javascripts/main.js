@@ -248,7 +248,7 @@ var CMUdict = new function(){
 		DH: 'dh',
 
 		EH: 'e',
-		ER: ['.','u','r'],// hurt /hɜːt/,/hɝt/ HH ER T
+		ER: ['u','r'],// hurt /hɜːt/,/hɝt/ HH ER T
 		EY: 'ae',
 
 		F:  'f',
