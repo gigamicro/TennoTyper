@@ -64,6 +64,14 @@ function cheatsheet(){
 	cheatWindow.focus();
 }
 
+function dictload(){
+	return CMUdict.dictload()
+	.then(function(){
+		tenno.currWord = orokin.currWord = null
+	})
+	.then(draw);
+}
+
 function saveImg(){
 	try{
 		var d=c.toDataURL("image/png");
@@ -214,6 +222,109 @@ function escapePunctuation(char){
 		case '#': return "Hash";
 		case '@': return "Logo";
 		default : return char;
+	}
+}
+
+//phonetic dictionary
+/*-------------------------------------------------*/
+var CMUdict = new function(){
+	// http://www.speech.cs.cmu.edu/cgi-bin/cmudict
+	// this.uri = "https://svn.code.sf.net/p/cmusphinx/code/trunk/cmudict/"
+	// this.uri = "https://raw.githubusercontent.com/Alexir/CMUdict/master/"
+	this.uri = "cmu/"
+	this.uri = this.uri + "cmudict-0.7b" // 2015 version (recent as of early 2024)
+	// +'.phones' is SYM\ttype, +'.symbols' is all valid symbols
+	this.dictparsekey = {
+		AA: 'aw',
+		AE: 'a',
+		AH: 'u',
+		AO: 'aw',
+		AW: 'ow',
+		AY: 'aye',
+
+		B:  'b',
+		CH: 'ch',
+		D:  'd',
+		DH: 'dh',
+
+		EH: 'e',
+		ER: ['u','r'],// hurt /hɜːt/,/hɝt/ HH ER T
+		EY: 'ae',
+
+		F:  'f',
+		G:  'g',
+		HH: 'h',
+
+		IH: 'i',
+		IY: 'ee',
+
+		JH: 'j',
+		K:  'k',
+		L:  'l',
+		M:  'm',
+		N:  'n',
+		NG: 'ng',
+
+		OW: 'o',
+		OY: ['o','ee'],
+
+		P:  'p',
+		R:  'r',
+		S:  's',
+		SH: 'sh',
+		T:  't',
+		TH: 'th',
+		UH: 'u',// hood hʊd/ HH UH D
+		UW: 'oo',
+		V:  'v',
+
+		W:  'oo',//
+		Y:  'ee',//
+		Z:  'z',
+		ZH: 'zh',
+		// 'kh' // LOCH  L AA1 K  //current implementation is (vowel)ch
+	}
+	// call this one to return when the dictionary will be loaded, and start it loading if it isn't
+	this.dictload = function(){
+		// console.log('dictload begin')
+		if (typeof this.dict === 'object') return this.promise
+		else return this.promise = this._dictload()
+	}
+	// call this one to load the dictionary
+	this._dictload = async function(){
+		this.dict = {}
+		let text = await fetch(this.uri).then(response => response.text())
+		let regex = /^(\S+)  (.+)$/
+		for (let line of text.split('\n')){
+			if (line.match(/^;;;/)) continue // comment
+			if (line === '') continue // empty
+			let match = line.match(regex)
+			if (!match){console.log("line",line,"doesn't match",regex);continue}
+			this.dict[match[1]]=match[2]
+		}
+	}
+	// grabs matching entry from database
+	this.query = function(word){
+		if (typeof word !== 'string') return console.log('word',word,'is not a string')
+		if (typeof this.dict !== 'object') return null
+		word = word.toUpperCase()
+		let entry = this.dict[word+'(1)'] || this.dict[word] || (word.match(/\(\d\)$/) && this.dict[word.slice(0,word.length-3)])
+		if(!entry) return null
+
+		let array = []
+		let sregex = /^([A-Z]+)([0-2]?)$/
+		for (let symbol of entry.split(' ')) {
+			let smatch = symbol.match(sregex)
+			if (!smatch){console.log(symbol,"in line",line,"doesn't match",sregex);continue}
+			array=array.concat(this.dictparsekey[smatch[1]])
+		}
+		return array
+	}
+	// same as prev but loads the dictionary if it isn't already
+	this._query = async function(word){
+		if (typeof word !== 'string') return Promise.reject('word '+word+' is not a string')
+		await this.dictload()
+		return this.query(word)
 	}
 }
 
@@ -683,6 +794,38 @@ var tenno = new function(){
 
 		if (override.checked) return this.literal(word);
 
+		var suffix = [];
+		{
+			let a = word.length - 1;
+			while(a >= 0){
+				let hit = true;
+				while(hit){
+					hit = false;
+					for(glyph of this.misc){
+						if(glyph != word.slice(a,a+glyph.length)) continue;
+
+						suffix.push(glyph);
+						a -= glyph.length;
+						hit = true;
+						break;
+					}
+				}
+				if(!hit) break;
+			}
+			word=word.slice(0,a+1);
+			suffix=suffix.reverse()
+		}
+
+		{
+			let cmu = CMUdict.query(word);
+			if(cmu && cmu.length > 0){
+				if (this == orokin && find(cmu[cmu.length-1], this.vowels)) cmu.push('h');
+				if (debug) console.log(word,'-dict->',cmu);
+				if (debug && suffix.length > 0) console.log(suffix);
+				return cmu.concat(suffix);
+			}
+		}
+
 		for(var a = 0; a < word.length; a++){
 			if(a < word.length-1){ // if there is at least 1 char after a
 				var b = true; // should the char be pushed after this switch?
@@ -1033,7 +1176,8 @@ var tenno = new function(){
 		if (this == orokin && find(wordsArray[wordsArray.length-1], this.vowels)) wordsArray.push('h');
 
 		if(debug) console.log(word, "->", wordsArray);
-		return wordsArray;
+		if (debug && suffix.length > 0) console.log(suffix);
+		return wordsArray.concat(suffix);
 	}
 }
 
