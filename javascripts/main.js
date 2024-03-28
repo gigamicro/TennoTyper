@@ -782,12 +782,35 @@ var tenno = new function(){
 
 		if (override.checked) return this.literal(word);
 
+		var suffix = [];
+		{
+			let a = word.length - 1;
+			while(a >= 0){
+				let hit = true;
+				while(hit){
+					hit = false;
+					for(glyph of this.misc){
+						if(glyph != word.slice(a,a+glyph.length)) continue;
+
+						suffix.push(glyph);
+						a -= glyph.length;
+						hit = true;
+						break;
+					}
+				}
+				if(!hit) break;
+			}
+			word=word.slice(0,a+1);
+			suffix=suffix.reverse()
+		}
+
 		{
 			let cmu = CMUdict.query(word);
 			if(cmu && cmu.length > 0){
 				if (this == orokin && find(cmu[cmu.length-1], this.vowels)) cmu.push('h');
 				if (debug) console.log(word,'-dict->',cmu);
-				return cmu;
+				if (debug && suffix.length > 0) console.log(suffix);
+				return cmu.concat(suffix);
 			}
 		}
 
@@ -1137,7 +1160,8 @@ var tenno = new function(){
 		if (this == orokin && find(wordsArray[wordsArray.length-1], this.vowels)) wordsArray.push('h');
 
 		if(debug) console.log(word, "->", wordsArray);
-		return wordsArray;
+		if (debug && suffix.length > 0) console.log(suffix);
+		return wordsArray.concat(suffix);
 	}
 }
 
