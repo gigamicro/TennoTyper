@@ -234,56 +234,7 @@ var CMUdict = new function(){
 	this.uri = "cmu/"
 	this.uri = this.uri + "cmudict-0.7b" // 2015 version (recent as of early 2024)
 	// +'.phones' is SYM\ttype, +'.symbols' is all valid symbols
-	this.dictparsekey = {
-		AA: 'aw',
-		AE: 'a',
-		AH: 'u',
-		AO: 'aw',
-		AW: 'ow',
-		AY: 'aye',
 
-		B:  'b',
-		CH: 'ch',
-		D:  'd',
-		DH: 'dh',
-
-		EH: 'e',
-		ER: ['u','r'],// hurt /hɜːt/,/hɝt/ HH ER T
-		EY: 'ae',
-
-		F:  'f',
-		G:  'g',
-		HH: 'h',
-
-		IH: 'i',
-		IY: 'ee',
-
-		JH: 'j',
-		K:  'k',
-		L:  'l',
-		M:  'm',
-		N:  'n',
-		NG: 'ng',
-
-		OW: 'o',
-		OY: ['o','ee'],
-
-		P:  'p',
-		R:  'r',
-		S:  's',
-		SH: 'sh',
-		T:  't',
-		TH: 'th',
-		UH: 'u',// hood hʊd/ HH UH D
-		UW: 'oo',
-		V:  'v',
-
-		W:  'oo',//
-		Y:  'ee',//
-		Z:  'z',
-		ZH: 'zh',
-		// 'kh' // LOCH  L AA1 K  //current implementation is (vowel)ch
-	}
 	// call this one to return when the dictionary will be loaded, and start it loading if it isn't
 	this.dictload = function(){
 		// console.log('dictload begin')
@@ -304,7 +255,7 @@ var CMUdict = new function(){
 		}
 	}
 	// grabs matching entry from database
-	this.query = function(word){
+	this.query = function(word,dictparsekey){
 		if (typeof word !== 'string') return console.log('word',word,'is not a string')
 		if (typeof this.dict !== 'object') return null
 		word = word.toUpperCase()
@@ -316,7 +267,7 @@ var CMUdict = new function(){
 		for (let symbol of entry.split(' ')) {
 			let smatch = symbol.match(sregex)
 			if (!smatch){console.log(symbol,"in line",line,"doesn't match",sregex);continue}
-			array=array.concat(this.dictparsekey[smatch[1]])
+			array=array.concat(dictparsekey[smatch[1]])
 		}
 		return array
 	}
@@ -786,6 +737,24 @@ var tenno = new function(){
 		return array;
 	}
 
+	this.CMUkey = {
+		AA:'aw', AE:'a',  AH:'u',  AO:'aw', AW:'ow', AY:'aye',
+		B: 'b',  CH:'ch', D: 'd',  DH:'dh',
+
+		EH:'e',  ER: [ 'u', 'r' ], EY:'ae',
+		F: 'f',  G: 'g',  HH:'h', 
+
+		IH:'i',  IY:'ee',
+		JH:'j',  K: 'k',  L: 'l',  M: 'm',  N: 'n',  NG:'ng',
+
+		OW:'o',  OY: ['o','ee'],
+		P: 'p',  R: 'r',  S: 's',  SH:'sh',
+		T: 't',  TH:'th', UH:'u',  UW:'oo', V: 'v', 
+
+		W: 'oo', Y: 'ee', Z: 'z',  ZH:'zh',
+		// 'kh' // LOCH  L AA1 K  //current implementation is (vowel)ch
+	}
+
 	/**
 	 * Returns word as array of phoneticized characters
 	 * https://www.thefreedictionary.com/words-containing-(substring) is handy
@@ -818,7 +787,7 @@ var tenno = new function(){
 		}
 
 		{
-			let cmu = CMUdict.query(word);
+			let cmu = CMUdict.query(word, this.CMUkey);
 			if(cmu && cmu.length > 0){
 				if (this == orokin && find(cmu[cmu.length-1], this.vowels)) cmu.push('h');
 				if (debug) console.log(word,'-dict->',cmu);
@@ -1219,6 +1188,7 @@ var orokin = new function(){
 	this.consonants = tenno.consonants;
 	this.fortis = tenno.fortis;
 	this.misc = tenno.misc;
+	this.CMUkey = tenno.CMUkey;
 
 	this.imgs = [];
 	this.chars = tenno.chars;
