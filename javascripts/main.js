@@ -64,6 +64,14 @@ function cheatsheet(){
 	cheatWindow.focus();
 }
 
+function dictload(){
+	return CMUdict.dictload()
+	.then(function(){
+		tenno.currWord = orokin.currWord = null
+	})
+	.then(draw);
+}
+
 function saveImg(){
 	try{
 		var d=c.toDataURL("image/png");

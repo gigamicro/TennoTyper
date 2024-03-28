@@ -56,7 +56,7 @@
 					<label for="bold"    ><input type="checkbox" onchange="draw()" id="bold"    >Bold</label>
 					<br><button type="button" id="cheat" onClick="cheatsheet()">CheatSheet</button>
 					<label for="debug" style="display:none;"><input type="checkbox" id="debug" onchange="debug=this.checked; draw()">Debug</label>
-					<br><button type="button" id="dict" onClick="CMUdict.dictload().then(function(){tenno.currWord=orokin.currWord=null}).then(draw)">load dictionary (3.72MB)</button>
+					<br><button type="button" id="dict" onClick="this.onClick=null;dictload().then(()=>this.style.display='none');">load dictionary (3.72MB)</button>
 				</td>
 			</tr>
 		</table>
