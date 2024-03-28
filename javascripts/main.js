@@ -300,14 +300,7 @@ var CMUdict = new function(){
 			if (line === '') continue // empty
 			let match = line.match(regex)
 			if (!match){console.log("line",line,"doesn't match",regex);continue}
-			let word = match[1]
-			this.dict[word]=[]
-			for (let symbol of match[2].split(' ')) {
-				let sregex = /^([A-Z]+)([0-2]?)$/
-				let smatch = symbol.match(sregex)
-				if (!smatch){console.log(symbol,"in line",line,"doesn't match",sregex);continue}
-				this.dict[word]=this.dict[word].concat(this.dictparsekey[smatch[1]])
-			}
+			this.dict[match[1]]=match[2]
 		}
 	}
 	// grabs matching entry from database
@@ -315,7 +308,17 @@ var CMUdict = new function(){
 		if (typeof word !== 'string') return console.log('word',word,'is not a string')
 		if (typeof this.dict !== 'object') return null
 		word = word.toUpperCase()
-		return this.dict[word+'(1)'] || this.dict[word] || (word.match(/\(\d\)$/) && this.dict[word.slice(0,word.length-3)])
+		let entry = this.dict[word+'(1)'] || this.dict[word] || (word.match(/\(\d\)$/) && this.dict[word.slice(0,word.length-3)])
+		if(!entry) return null
+
+		let array = []
+		for (let symbol of entry.split(' ')) {
+			let sregex = /^([A-Z]+)([0-2]?)$/
+			let smatch = symbol.match(sregex)
+			if (!smatch){console.log(symbol,"in line",line,"doesn't match",sregex);continue}
+			array=array.concat(this.dictparsekey[smatch[1]])
+		}
+		return array
 	}
 	// same as prev but loads the dictionary if it isn't already
 	this._query = async function(word){
