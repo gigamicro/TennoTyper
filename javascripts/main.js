@@ -312,8 +312,8 @@ var CMUdict = new function(){
 		if(!entry) return null
 
 		let array = []
+		let sregex = /^([A-Z]+)([0-2]?)$/
 		for (let symbol of entry.split(' ')) {
-			let sregex = /^([A-Z]+)([0-2]?)$/
 			let smatch = symbol.match(sregex)
 			if (!smatch){console.log(symbol,"in line",line,"doesn't match",sregex);continue}
 			array=array.concat(this.dictparsekey[smatch[1]])
