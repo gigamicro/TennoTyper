@@ -782,9 +782,14 @@ var tenno = new function(){
 
 		if (override.checked) return this.literal(word);
 
-		var cmu = CMUdict.query(word);
-		if (cmu && cmu.length > 0) return cmu;
-		if (debug) console.log('non-dictionary word:',word);
+		{
+			let cmu = CMUdict.query(word);
+			if(cmu && cmu.length > 0){
+				if (this == orokin && find(cmu[cmu.length-1], this.vowels)) cmu.push('h');
+				if (debug) console.log(word,'-dict->',cmu);
+				return cmu;
+			}
+		}
 
 		for(var a = 0; a < word.length; a++){
 			if(a < word.length-1){ // if there is at least 1 char after a
