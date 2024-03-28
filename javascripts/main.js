@@ -284,15 +284,16 @@ var CMUdict = new function(){
 		ZH: 'zh',
 		// 'kh' // LOCH  L AA1 K  //current implementation is (vowel)ch
 	}
+	// call this one to return when the dictionary will be loaded, and start it loading if it isn't
 	this.dictload = function(){
 		// console.log('dictload begin')
 		if (typeof this.dict === 'object') return this.promise
 		else return this.promise = this._dictload()
 	}
+	// call this one to load the dictionary
 	this._dictload = async function(){
 		this.dict = {}
 		let text = await fetch(this.uri).then(response => response.text())
-			// .catch(function(err){CMUdict.dict=undefined;console.log(err)})
 		for (let line of text.split('\n')){
 			if (line.match(/^;;;/)) continue // comment
 			if (line === '') continue // empty
@@ -307,16 +308,15 @@ var CMUdict = new function(){
 				if (!smatch){console.log(symbol,"in line",line,"doesn't match",sregex);continue}
 				this.dict[word]=this.dict[word].concat(this.dictparsekey[smatch[1]])
 			}
-			// console.log(line,'->',this.dict[word])
 		}
-		// console.log('end of dictload')
 	}
-	// this.promise = this.dictload()
+	// grabs matching entry from database
 	this.query = function(word){
 		if (typeof word !== 'string') return console.log('word',word,'is not a string')
 		if (typeof this.dict !== 'object') return null
 		return this.dict[word.toUpperCase()]
 	}
+	// same as prev but loads the dictionary if it isn't already
 	this._query = async function(word){
 		if (typeof word !== 'string') return Promise.reject('word '+word+' is not a string')
 		await this.dictload()
