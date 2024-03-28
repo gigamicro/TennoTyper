@@ -314,7 +314,8 @@ var CMUdict = new function(){
 	this.query = function(word){
 		if (typeof word !== 'string') return console.log('word',word,'is not a string')
 		if (typeof this.dict !== 'object') return null
-		return this.dict[word.toUpperCase()]
+		word = word.toUpperCase()
+		return this.dict[word+'(1)'] || this.dict[word] || (word.match(/\(\d\)$/) && this.dict[word.slice(0,word.length-3)])
 	}
 	// same as prev but loads the dictionary if it isn't already
 	this._query = async function(word){
