@@ -217,6 +217,97 @@ function escapePunctuation(char){
 	}
 }
 
+//phonetic dictionary
+/*-------------------------------------------------*/
+var CMUdict = new function(){
+	// http://www.speech.cs.cmu.edu/cgi-bin/cmudict
+	// this.uri = "https://svn.code.sf.net/p/cmusphinx/code/trunk/cmudict/"
+	// this.uri = "https://raw.githubusercontent.com/Alexir/CMUdict/master/"
+	this.uri = "cmu/"
+	this.uri = this.uri + "cmudict-0.7b" // 2015 version (recent as of early 2024)
+	// +'.phones' is SYM\ttype, +'.symbols' is all valid symbols
+	this.dictparsekey = {
+		AA: 'aa',
+		AE: 'ae',
+		AH: 'ah',
+		AO: 'ao',
+		AW: 'aw',
+		AY: 'ay',
+		B: 'b',
+		CH: 'ch',
+		D: 'd',
+		DH: 'dh',
+		EH: 'eh',
+		ER: 'er',
+		EY: 'ey',
+		F: 'f',
+		G: 'g',
+		HH: 'hh',
+		IH: 'ih',
+		IY: 'iy',
+		JH: 'jh',
+		K: 'k',
+		L: 'l',
+		M: 'm',
+		N: 'n',
+		NG: 'ng',
+		OW: 'ow',
+		OY: 'oy',
+		P: 'p',
+		R: 'r',
+		S: 's',
+		SH: 'sh',
+		T: 't',
+		TH: 'th',
+		UH: 'uh',
+		UW: 'uw',
+		V: 'v',
+		W: 'w',
+		Y: 'y',
+		Z: 'z',
+		ZH: 'zh',
+
+	}
+	this.dictload = function(){
+		// console.log('dictload begin')
+		if (typeof this.dict === 'object') return this.promise
+		else return this.promise = this._dictload()
+	}
+	this._dictload = async function(){
+		this.dict = {}
+		let text = await fetch(this.uri).then(response => response.text())
+			// .catch(function(err){CMUdict.dict=undefined;console.log(err)})
+		for (let line of text.split('\n')){
+			if (line.match(/^;;;/)) continue // comment
+			if (line === '') continue // empty
+			let regex = /^(\S+)  (.+)$/
+			let match = line.match(regex)
+			if (!match){console.log("line",line,"doesn't match",regex);continue}
+			let word = match[1]
+			this.dict[word]=[]
+			for (let symbol of match[2].split(' ')) {
+				let sregex = /^([A-Z]+)([0-2]?)$/
+				let smatch = symbol.match(sregex)
+				if (!smatch){console.log(symbol,"in line",line,"doesn't match",sregex);continue}
+				this.dict[word].push(this.dictparsekey[smatch[1]])
+			}
+			// console.log(line,'->',this.dict[word])
+		}
+		// console.log('end of dictload')
+	}
+	// this.promise = this.dictload()
+	this.query = function(word){
+		if (typeof word !== 'string') return console.log('word',word,'is not a string')
+		// if (typeof this.dict !== 'object') return console.log('CMSdict.query(',word,'): no dictionary, promise =',this.promise)
+		return this.dict[word.toUpperCase()]
+	}
+	this._query = async function(word){
+		if (typeof word !== 'string') return console.log('word',word,'is not a string')
+		await this.dictload()
+		return this.dict[word.toUpperCase()]
+	}
+}
+
 //grineer
 /*-------------------------------------------------*/
 
