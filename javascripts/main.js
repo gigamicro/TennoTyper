@@ -314,7 +314,7 @@ var CMUdict = new function(){
 	// this.promise = this.dictload()
 	this.query = function(word){
 		if (typeof word !== 'string') return console.log('word',word,'is not a string')
-		if (typeof this.dict !== 'object') return console.log('CMSdict.query(',word,'): no dictionary, promise =',this.promise)
+		if (typeof this.dict !== 'object') return;//console.log('CMSdict.query(',word,'): no dictionary, promise =',this.promise)
 		return this.dict[word.toUpperCase()]
 	}
 	this._query = async function(word){
