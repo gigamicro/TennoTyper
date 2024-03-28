@@ -1025,6 +1025,7 @@ var tenno = new function(){
 				}
 			}
 			if(this.imgs[wordsArray[a]] == undefined){
+				if (debug) console.log('undefined char',wordsArray[a]);
 				wordsArray.splice(a, 1);
 			}
 		}
