@@ -667,7 +667,7 @@ var tenno = new function(){
 					array.push('k');
 					break;
 				default:
-					// array.push('-');
+					if (debug) console.log(word[a++],'from',word,'is unknown')
 					break;
 			}
 		}
