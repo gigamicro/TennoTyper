@@ -227,46 +227,54 @@ var CMUdict = new function(){
 	this.uri = this.uri + "cmudict-0.7b" // 2015 version (recent as of early 2024)
 	// +'.phones' is SYM\ttype, +'.symbols' is all valid symbols
 	this.dictparsekey = {
-		AA: '',
-		AE: '',
-		AH: '',
-		AO: '',
-		AW: '',
-		AY: '',
-		B:  '',
-		CH: '',
-		D:  '',
-		DH: '',
-		EH: '',
-		ER: '',
-		EY: '',
-		F:  '',
-		G:  '',
-		HH: '',
-		IH: '',
-		IY: '',
-		JH: '',
-		K:  '',
-		L:  '',
-		M:  '',
-		N:  '',
-		NG: '',
-		OW: '',
-		OY: '',
-		P:  '',
-		R:  '',
-		S:  '',
-		SH: '',
-		T:  '',
-		TH: '',
-		UH: '',
-		UW: '',
-		V:  '',
-		W:  '',
-		Y:  '',
-		Z:  '',
-		ZH: '',
+		AA: 'aw',
+		AE: 'a',
+		AH: 'u',
+		AO: 'aw',
+		AW: 'ow',
+		AY: 'aye',
 
+		B:  'b',
+		CH: 'ch',
+		D:  'd',
+		DH: 'dh',
+
+		EH: 'e',
+		ER: ['.','u','r'],// hurt /hɜːt/,/hɝt/ HH ER T
+		EY: 'ae',
+
+		F:  'f',
+		G:  'g',
+		HH: 'h',
+
+		IH: 'i',
+		IY: 'ee',
+
+		JH: 'j',
+		K:  'k',
+		L:  'l',
+		M:  'm',
+		N:  'n',
+		NG: 'ng',
+
+		OW: 'o',
+		OY: ['o','ee'],
+
+		P:  'p',
+		R:  'r',
+		S:  's',
+		SH: 'sh',
+		T:  't',
+		TH: 'th',
+		UH: 'u',// hood hʊd/ HH UH D
+		UW: 'oo',
+		V:  'v',
+
+		W:  'oo',//
+		Y:  'ee',//
+		Z:  'z',
+		ZH: 'zh',
+		// 'kh' // LOCH  L AA1 K  //current implementation is (vowel)ch
 	}
 	this.dictload = function(){
 		// console.log('dictload begin')
@@ -289,7 +297,7 @@ var CMUdict = new function(){
 				let sregex = /^([A-Z]+)([0-2]?)$/
 				let smatch = symbol.match(sregex)
 				if (!smatch){console.log(symbol,"in line",line,"doesn't match",sregex);continue}
-				this.dict[word].push(this.dictparsekey[smatch[1]])
+				this.dict[word].concat(this.dictparsekey[smatch[1]])
 			}
 			// console.log(line,'->',this.dict[word])
 		}
