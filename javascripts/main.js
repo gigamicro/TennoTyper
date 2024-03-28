@@ -320,7 +320,7 @@ var CMUdict = new function(){
 	this._query = async function(word){
 		if (typeof word !== 'string') return Promise.reject('word '+word+' is not a string')
 		await this.dictload()
-		return this.dict[word.toUpperCase()]
+		return this.query(word)
 	}
 }
 
