@@ -365,6 +365,7 @@ var grineer = new function(){
 				ctx.drawImage(img, offset, 0);
 				offset += (img.width + this.spacing.LetterSpacing);
 			}
+			else if (debug) console.log("the letter",word[letter],"is unknown to the",this==grineer?'Grineer': this==corpus?'Corpus': null);
 		}
 	}
 
