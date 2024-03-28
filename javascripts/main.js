@@ -294,10 +294,10 @@ var CMUdict = new function(){
 	this._dictload = async function(){
 		this.dict = {}
 		let text = await fetch(this.uri).then(response => response.text())
+		let regex = /^(\S+)  (.+)$/
 		for (let line of text.split('\n')){
 			if (line.match(/^;;;/)) continue // comment
 			if (line === '') continue // empty
-			let regex = /^(\S+)  (.+)$/
 			let match = line.match(regex)
 			if (!match){console.log("line",line,"doesn't match",regex);continue}
 			let word = match[1]
