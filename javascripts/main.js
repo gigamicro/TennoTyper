@@ -762,7 +762,7 @@ var tenno = new function(){
 		T: 't',  TH:'th', UH:'u',  UW:'oo', V: 'v', 
 
 		W: 'oo', Y: 'ee', Z: 'z',  ZH:'zh',
-		// 'kh' // LOCH  L AA1 K // LOCK  L AA1 K  //current implementation is (vowel)ch
+		// 'kh' // LOCH  L AA1 K // LOCK  L AA1 K  //current implementation is ..h & ,,'k']
 	}
 
 	/**
@@ -800,7 +800,6 @@ var tenno = new function(){
 			let cmu = CMUdict.query(word, this.CMUkey);
 			if(cmu && cmu.length > 0){
 				if (this == orokin && find(cmu[cmu.length-1], this.vowels)) cmu.push('h');
-				// for (let a in cmu) if (a>0 && cmu[a]=='' && this.vowels.includes(cmu[a-1])) cmu[a] = 'kh';
 				if (cmu.length>0 && word.length>0 && cmu[cmu.length-1] == 'k' && word[word.length-1] == 'h') cmu[cmu.length-1]='kh';
 				if (debug) console.log(word,'-dict->',cmu);
 				if (debug && suffix.length > 0) console.log(suffix);
