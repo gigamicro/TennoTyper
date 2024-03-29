@@ -235,10 +235,13 @@ function escapePunctuation(char){
 var CMUdict = new function(){
 	// http://www.speech.cs.cmu.edu/cgi-bin/cmudict
 	// this.uri = "https://svn.code.sf.net/p/cmusphinx/code/trunk/cmudict/"
-	// this.uri = "https://raw.githubusercontent.com/Alexir/CMUdict/master/"
-	this.uri = "cmu/"
+	this.uri = "https://raw.githubusercontent.com/Alexir/CMUdict/master/"
+	// this.uri = "cmu/"
 	this.uri = this.uri + "cmudict-0.7b" // 2015 version (recent as of early 2024)
 	// +'.phones' is SYM\ttype, +'.symbols' is all valid symbols
+
+	for (const a of dict.parentElement.getElementsByTagName('a'))
+		a.href=this.uri // make the link have the correct href
 
 	// call this one to return when the dictionary will be loaded, and start it loading if it isn't
 	this.dictload = function(){
@@ -252,7 +255,7 @@ var CMUdict = new function(){
 		if(!response.ok) return Promise.reject(response)
 		this.dict = {}
 		let text = await response.text()
-		let regex = /^(\S+)  (.+)$/
+		let regex = /^(\S+)  (.+)\r?$/
 		for (let line of text.split('\n')){
 			if (line.match(/^;;;/)) continue // comment
 			if (line === '') continue // empty
