@@ -224,8 +224,9 @@ function escapePunctuation(char){
 		case ',': return "Comma";
 		case '-': return "Hyphen";
 		case '.': return "Period";
+		case '@': return "At";
 		case '#': return "Hash";
-		case '@': return "Logo";
+		case '$': return "Logo";
 		default : return char;
 	}
 }
@@ -305,7 +306,7 @@ var grineer = new function(){
 	};
 
 	this.imgs = [];
-	this.chars = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'r', 's', 't', 'u', 'v', 'w', 'y', 'z', '?', '.', ',', '#', '@'/*logo*/, '0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
+	this.chars = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'r', 's', 't', 'u', 'v', 'w', 'y', 'z', '?', '.', ',', '#', '@', '$'/*logo*/, '0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
 	for(var a = 0; a < this.chars.length; a++){ // gets images and puts them in imgs table
 		this.imgs[this.chars[a]] = new Image();
 		this.imgs[this.chars[a]].src = this.folder + this.pre + escapePunctuation(this.chars[a]) + this.ext;
