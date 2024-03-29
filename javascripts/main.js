@@ -269,7 +269,7 @@ var CMUdict = new function(){
 		if (typeof word !== 'string') return console.log('word',word,'is not a string')
 		if (typeof this.dict !== 'object') return null
 		word = word.toUpperCase()
-		let entry = this.dict[word+'(1)'] || this.dict[word] || (word.match(/\(\d\)$/) && this.dict[word.slice(0,word.length-3)])
+		let entry = this.dict[word+'(1)'] || this.dict[word] || (word.match(/\(0\)$/) && this.dict[word.slice(0,word.length-3)])
 		if(!entry) return null
 
 		let array = []
