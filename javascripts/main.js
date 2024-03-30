@@ -729,6 +729,7 @@ var tenno = new function(){
 					break;
 				}
 			}
+			if (a >= word.length) break;
 			switch(word[a++]){
 				case 'q':
 					array.push('k');
