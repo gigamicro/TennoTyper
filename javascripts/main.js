@@ -702,6 +702,12 @@ var tenno = new function(){
 
 	/**
 	 * Returns word as array of directly-matched characters
+	 * Pangram:
+	 * 0123456789r
+	 * p/b/t/d/s/z/j/k/m/h/g/
+	 * f/v/thdhshzhchkhn/l/ng
+	 * a/e/i/o/u/y/w/aw/ae/ow/aye
+	 * or just in order of tennobet.png
 	 */
 	this.literal = function(word){
 		var array = [];
