@@ -29,11 +29,10 @@
 				}
 			}
 		</style>
-		<meta name="viewport" content="width=device-width,height=device-height,initial-scale=1.0"/>
-		<meta name="description" content="Convert English to Tenno Script, Orokin Monospace, Corpus, or Grineer">
-		<meta name="keywords" content="warframe,tenno,orokin,corpus,grineer,language,translate,translator,english">
-		<meta name="author" content="Clarvel & others">
-		<LINK REL="SHORTCUT ICON" HREF="images/favicon.ico">
+		<meta name="description" content="Convert English to Tenno Script, Orokin Monospace, Corpus, or Grineer"/>
+		<meta name="keywords" content="warframe,tenno,orokin,corpus,grineer,language,translate,translator,english"/>
+		<meta name="author" content="Clarvel, gigamicro, & others"/>
+		<link rel="shortcut icon" href="images/favicon.ico"/>
 		<title>TennoTyper</title>
 	</head>
 
@@ -56,13 +55,22 @@
 			<td>
 				<label for="override"><input type="checkbox" onchange="draw()" id="override">Manual Override</label>
 				<label for="bold"    ><input type="checkbox" onchange="draw()" id="bold"    >Bold</label>
-				<br><button type="button" id="cheat" onClick="cheatsheet()">CheatSheet</button>
+				<br/><button type="button" id="cheat" onClick="cheatsheet()">CheatSheet</button>
 				<label for="debug" style="display:none;"><input type="checkbox" id="debug" onchange="debug=this.checked; draw()">Debug</label>
-				<label for="dict"><br><button type="button" id="dict" onClick="dictload().then(()=>this.style.display='none').catch(r=>this.innerText=r.statusText);">load</button> <a onmouseenter="this.href=CMUdict.uri" href="http://www.speech.cs.cmu.edu/cgi-bin/cmudict">dictionary</a> (<4MB)</label>
+				<label for="dict"><br/><button type="button" id="dict" onClick="dictload().then(()=>this.style.display='none').then(()=>this.nextElementSibling.nextElementSibling.nextElementSibling.style.display='').catch(r=>this.innerText=r.statusText);">load</button>
+					<a onmouseenter="this.href=CMUdict.uri" href="http://www.speech.cs.cmu.edu/cgi-bin/cmudict">dictionary</a> (<4MB)
+					<span style="text-decoration:dotted underline;" title="loads an external dictionary for more accurate pronunciation; suffix your words with '(N)' for N=0-3 for variant pronunciation; default variant number may be set with dropdown">(?)</span>
+					<select id="variant" onchange="draw()" style="display:none;" title="default variant">
+						<option value="">(0)</option>
+						<option value="(1)" selected>(1)</option>
+						<option value="(2)">(2)</option>
+						<option value="(3)">(3)</option>
+					</select>
+				</label>
 			</td>
 		</table>
 		<canvas id="renderWindow">Your browser does not support the HTML5 canvas tag.</canvas>
-		<script src="javascripts/main.js" type="text/javascript" id="main" onload="draw()"></script>
+		<script src="main.js" type="text/javascript" id="main" onload="draw()"></script>
 		<noscript>This page uses extensive javascript, but javascript is unavailable.</noscript>
 	</body>
 </html>

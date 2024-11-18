@@ -9,6 +9,7 @@ var override = document.getElementById("override"); // tenno manual override but
 var bold = document.getElementById("bold"); // corpus bold option button
 var background = document.getElementById("background"); // background option button
 var dict = document.getElementById("dict"); // phonetic dictionary load button
+var variant = document.getElementById("variant");
 
 var js = {
 	path: "./javascripts/",
@@ -106,6 +107,7 @@ document.onkeydown = function(evt) {
 		|| evt.keyCode == 18 // alt
 		|| evt.keyCode == 13 // enter
 		|| document.activeElement==language && (evt.keyCode >= 37 && evt.keyCode <= 40) // arrow keys on dropdown
+		|| document.activeElement==variant && (evt.keyCode >= 37 && evt.keyCode <= 40) // arrow keys on other dropdown
 	) ;else text.focus()
 }
 
@@ -168,6 +170,8 @@ function placeString(ctx, string, lanClass){
 	if(debug){
 		ctx.stroke(); // for rect bounding boxes
 	}
+
+	lanClass.currWord = null
 }
 
 function Word(str, w, h, yI){ // basic word class
@@ -270,8 +274,15 @@ var CMUdict = new function(){
 		if (typeof word !== 'string') return console.log('word',word,'is not a string')
 		if (typeof this.dict !== 'object') return null
 		word = word.toUpperCase()
-		let entry = this.dict[word+'(1)'] || this.dict[word] || (word.match(/\(0\)$/) && this.dict[word.slice(0,word.length-3)])
+		console.log("variant.value:",variant.value)
+		let entry = null
+		|| (word.match(/\(0\)$/) && this.dict[word.slice(0,word.length-3)])
+		|| (word.match(/\([1-9]\)$/) && this.dict[word])
+		|| this.dict[word+variant.value]
+		|| this.dict[word]
 		if(!entry) return null
+
+		if (debug) console.log('CMUdict: got entry',entry,'from word',word)
 
 		let array = []
 		let sregex = /^([A-Z]+)([0-2]?)$/
@@ -435,18 +446,19 @@ var tenno = new function(){
 	};
 
 	// categories
-	this.vowels = ['a', 'e', 'i', 'o', 'u', 'w', 'y', 'ee', 'aw', 'oo', 'ae', 'aye', 'ow'];
-	this.misc = [',', '.', '-', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
-	this.fortis = this.vowels+['dh', 'zh', 'kh', 'ng', 'b', 'd', 'z', 'j', 'g', 'v', 'm', 'n'/*?*/, 'r'/*?*/, 'l'];
-	this.consonants = [];
-
+	this.vowels = ['ee', 'i', 'e', 'a', 'aw', 'u', 'o', 'oo', 'ae', 'aye', 'ow']
+	this.misc = [',', '.', '-', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
+	this.fortis = ['p', 't', 'k', 'ch', 'f', 'th', 's', 'sh', 'kh', 'h']
+	this.lenis = ['b', 'd', 'g', 'j', 'v', 'dh', 'z', 'zh', 'm', 'n', 'ng', 'r', 'l'] // also w and y
+	this.consonants = this.fortis.concat(this.lenis);
+	this.chars = this.vowels.concat(this.consonants,this.misc);
+	this.chars.sort().reverse()
 	this.imgs = [];
-	this.chars = ['aye', 'ae', 'ow', 'aw', 'ee', 'i', 'e', 'a', 'u', 'oo', 'o', 'th', 'dh', 'sh', 'zh', 'ch', 'kh', 'ng', 'p', 'b', 't', 'd', 's', 'z', 'j', 'k', 'g', 'f', 'v', 'm', 'n', 'h', 'r', 'l', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '.', ',', '-'];
 	for(var ch of this.chars){
 		this.imgs[ch] = new Image();
 		this.imgs[ch].src = this.folder + this.pre + escapePunctuation(ch) + this.ext;
-		if (!this.vowels.includes(ch) && !this.misc.includes(ch)) this.consonants.push(ch);
 	}
+	this.charvowels=this.vowels.concat(['w','y'])
 
 	this.placeWord = function(ctx, word){ // place centered images
 		this.phoneticizecache(word);
@@ -782,6 +794,8 @@ var tenno = new function(){
 
 		if (override.checked) return this.literal(word);
 
+		word=word.replace(/'/,'');
+
 		var suffix = [];
 		{
 			let a = word.length - 1;
@@ -943,8 +957,8 @@ var tenno = new function(){
 						}else if(word[a+1] == 'a'){
 							wordsArray.push('ee');
 							b = false;
-						}else if(a < word.length-2 && word[a+2] == 'e' && !find(word[a+3], this.vowels)){
-							if(!find(word[a+1], this.vowels) && !find(word[a+1], this.misc)){
+						}else if(a < word.length-2 && word[a+2] == 'e' && !find(word[a+3], this.charvowels)){
+							if(!find(word[a+1], this.charvowels) && !find(word[a+1], this.misc)){
 								wordsArray.push('aye');
 								b = false;
 							}
@@ -955,7 +969,11 @@ var tenno = new function(){
 						}
 						break;
 					case 'j': break;
-					case 'k': break;
+					case 'k':
+						if(a+1 < word.length && word[a+1] == 'n'){
+							b = false;
+						}
+						break;
 					case 'l': break;
 					case 'm': break;
 					case 'n':
@@ -969,9 +987,8 @@ var tenno = new function(){
 						switch(word[a+1]){
 							case 'u':
 								if(wordsArray[wordsArray.length-1] == 'sh'){
-									b = false;
 									break;
-								}
+								}//cont
 							case 'o':
 								wordsArray.push('oo');
 								a++;
@@ -984,9 +1001,12 @@ var tenno = new function(){
 								wordsArray.push('o');
 								break;
 							default:
-								if(find(word[a+1], this.vowels) || find(word[a+1], this.misc) || (a+2 < word.length && find(word[a+2], this.vowels))){
+								if(find(word[a+1], this.charvowels) || find(word[a+1], this.misc) || (a+2 < word.length && find(word[a+2], this.charvowels))){
 									wordsArray.push('o');
 								}else{
+									if(wordsArray[wordsArray.length-1] == 'h'){
+										wordsArray.push('oo');
+									}else
 									wordsArray.push('aw');
 								}
 						}
@@ -1009,13 +1029,21 @@ var tenno = new function(){
 						break;
 					case 't':
 						if(word[a+1] == 'h'){
-							wordsArray.push('th');
-							if(a < word.length-2 && word[a+2] == 'e'){
-								if(word.length == 3 || find(word[a+3], this.misc)){
+							if(a+2<word.length && (a>0 || find(word, [
+								'the', 'this', 'that', 'these', 'those', 'thou', 'thee', 'thy', 'thine', 
+								'thyself', 'they', 'them', 'theirs', 'their', 'themself', 'themselves', 
+								'there', 'then', 'then', 'than', 'thus', 'though', 'thence', 'thither', 
+								'therefore', 'thereupon', 'thereby', 'thereafter', 'thenceforth'
+								]))){
+								wordsArray.push('dh');
+								if(a+2 < word.length && word[a+2] == 'e'
+								&& (word.length == 3 || find(word[a+3], this.misc))){ // the
 									wordsArray.push('u');
 									wordsArray.push('h');
 									a++;
 								}
+							}else{
+								wordsArray.push('th');
 							}
 							a++;
 							b = false;
@@ -1025,7 +1053,7 @@ var tenno = new function(){
 							// wordsArray.push('m');// may have been a typo
 							// a += 3;
 							b = false;
-						}else if(a > 0 && a+1<word.length && word[a+1] == 'y'){
+						}else if(a > 0 && word[a+1] == 'y'){
 							wordsArray.push('t');
 							wordsArray.push('ee');
 							a++;
@@ -1033,7 +1061,7 @@ var tenno = new function(){
 						}
 						break;
 					case 'u':
-						if(a < word.length-2 && find(word[a+1], this.consonants) && find(word[a+2], this.vowels)){
+						if(a < word.length-2 && find(word[a+1], this.consonants) && find(word[a+2], this.charvowels)){
 							wordsArray.push('oo');
 							b = false;
 							break;
@@ -1042,7 +1070,13 @@ var tenno = new function(){
 					case 'v': break;
 					case 'w': b = false;
 						wordsArray.push('oo');
-						if(word[a+1] == 'a'){
+						if(word[a+1] == 'h'){
+							if(a+2 < word.length && word[a+2] == 'o'){
+								wordsArray.pop();
+								wordsArray.push('h');
+							}
+							a++;
+						}else if(word[a+1] == 'a'){
 							wordsArray.push('o');
 							a++;
 						}
@@ -1117,13 +1151,17 @@ var tenno = new function(){
 						}
 						break;
 					case 'o':
-						wordsArray.push('o');
+						if (word.length>2 && word[a-2]=='w' && word[a-1]=='h'){
+							wordsArray.push('oo');
+						}else{
+							wordsArray.push('o');
+						}
 						break;
 					case 'q':
 						wordsArray.push('k');
 						break;
 					case 's':
-						if(wordsArray.length > 0 && find(wordsArray[wordsArray.length-1], this.fortis)){
+						if(wordsArray.length > 0 && find(wordsArray[wordsArray.length-1], this.lenis.concat(this.vowels))){
 							wordsArray.push('z');
 						}else{
 							wordsArray.push('s');
