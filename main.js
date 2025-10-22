@@ -80,12 +80,11 @@ function dictload(){
 
 function saveImg(){
 	try{
-		var d=c.toDataURL("image/png");
-		var w=window.open('about:blank','image from canvas');
-		w.document.write("<img src='"+d+"' alt='from canvas'/>");
+		window.open(c.toDataURL(), 'image from canvas'); 
 	}catch(error){
-		console.log("Could not save canvas.");
-		alert("Could not save image:\n" + error);
+    		let err = "Could not save image:\n" + error;
+		console.log(err);
+		alert(err);
 	}
 }
 
