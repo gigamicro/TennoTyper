@@ -78,16 +78,6 @@ function dictload(){
 	.then(draw);
 }
 
-function saveImg(){
-	try{
-		window.open(c.toDataURL(), 'image from canvas'); 
-	}catch(error){
-    		let err = "Could not save image:\n" + error;
-		console.log(err);
-		alert(err);
-	}
-}
-
 var debugBox = document.getElementById("debug");
 var debug = debugBox.checked;
 if (debug) debugBox.parentElement.style.display = "";
