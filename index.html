@@ -57,7 +57,7 @@
 				<label for="bold"    ><input type="checkbox" onchange="draw()" id="bold"    >Bold</label>
 				<br/><button type="button" id="cheat" onClick="cheatsheet()">CheatSheet</button>
 				<label for="debug" style="display:none;"><input type="checkbox" id="debug" onchange="debug=this.checked; draw()">Debug</label>
-				<label for="dict"><br/><button type="button" id="dict" onClick="dictload().then(()=>this.style.display='none').then(()=>this.nextElementSibling.nextElementSibling.nextElementSibling.style.display='').catch(r=>this.innerText=r.statusText);">load</button>
+				<label for="dict"><br/><button type="button" id="dict" onClick="dictload().then(()=>this.style.display='none').then(()=>this.nextElementSibling.nextElementSibling.nextElementSibling.style.display='').catch(r=>this.innerText=r.statusText||'err');">load</button>
 					<a onmouseenter="this.href=CMUdict.uri" href="http://www.speech.cs.cmu.edu/cgi-bin/cmudict">dictionary</a> (<4MB)
 					<span style="text-decoration:dotted underline;" title="loads an external dictionary for more accurate pronunciation; suffix your words with '(N)' for N=0-3 for variant pronunciation; default variant number may be set with dropdown">(?)</span>
 					<select id="variant" onchange="draw()" style="display:none;" title="default variant">
