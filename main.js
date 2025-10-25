@@ -11,17 +11,10 @@ var background = document.getElementById("background"); // background option but
 var dict = document.getElementById("dict"); // phonetic dictionary load button
 var variant = document.getElementById("variant");
 
-var js = {
-	path: "./javascripts/",
-	ext: ".js",
-};
-
 var languages = ["tenno", "orokin", "corpus", "grineer"];
 var cheatsheets = {};
 	for(var a = 0; a < languages.length; a++){
-		var img = new Image();
-		img.src = "./images/" + languages[a] + "bet.png";
-		cheatsheets[languages[a]] = img;
+		cheatsheets[languages[a]] = "./images/" + languages[a] + "bet.png";
 	}
 
 //html callbacks
@@ -66,7 +59,7 @@ function cheatsheet(){
 	if(cheatWindow != undefined){
 		cheatWindow.close();
 	}
-	cheatWindow = window.open(cheatsheets[language.value].src);
+	cheatWindow = window.open(cheatsheets[language.value]);
 	cheatWindow.focus();
 }
 
